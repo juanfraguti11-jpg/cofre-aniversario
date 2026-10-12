@@ -3,14 +3,28 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>Nuestra Historia de Amor ❤️</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 
   <style>
+    :root {
+      --color-beige-bg: #fbf9f5;
+      --color-beige-card: #ffffff;
+      --color-oliva-suave: #87986a;
+      --color-oliva-oscuro: #556b2f;
+      --color-dorado: #c5a059;
+      --color-dorado-brillo: #dfc285;
+      --color-texto: #333a2c;
+      --color-texto-muted: #6b7264;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -19,41 +33,31 @@
     }
 
     body {
-      background: #0f0c20;
-      color: #fff;
+      background: var(--color-beige-bg);
+      color: var(--color-texto);
       font-family: 'Poppins', sans-serif;
       overflow-x: hidden;
       min-height: 100vh;
       position: relative;
     }
 
-    /* Fondo degradado suave romántico */
-    .bg-gradient {
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(circle at 50% 10%, #3a1c71 0%, #1e1035 50%, #0d0614 100%);
-      z-index: -2;
-    }
-
-    /* Estrellas / partículas de fondo */
-    .stars {
+    /* Fondo elegante con sutil patrón orgánico */
+    .bg-pattern {
       position: fixed;
       inset: 0;
       background-image: 
-        radial-gradient(2px 2px at 20px 30px, #ffffff, rgba(0,0,0,0)),
-        radial-gradient(2px 2px at 40px 70px, #ff9ff3, rgba(0,0,0,0)),
-        radial-gradient(1px 1px at 90px 40px, #fff, rgba(0,0,0,0)),
-        radial-gradient(2px 2px at 160px 120px, #feca57, rgba(0,0,0,0));
-      background-repeat: repeat;
-      background-size: 200px 200px;
-      opacity: 0.3;
+        radial-gradient(var(--color-oliva-suave) 0.6px, transparent 0.6px),
+        radial-gradient(var(--color-dorado) 0.6px, var(--color-beige-bg) 0.6px);
+      background-size: 28px 28px;
+      background-position: 0 0, 14px 14px;
+      opacity: 0.22;
       z-index: -1;
     }
 
     .container {
-      max-width: 600px;
+      max-width: 620px;
       margin: 0 auto;
-      padding: 30px 20px 80px 20px;
+      padding: 40px 22px 90px 22px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -62,102 +66,100 @@
     /* Encabezado */
     .header {
       text-align: center;
-      margin-top: 15px;
-      margin-bottom: 30px;
+      margin-bottom: 32px;
       animation: fadeInDown 1s ease-out;
     }
 
-    .tag-romantico {
+    .tag-oliva {
       display: inline-block;
-      background: rgba(255, 107, 129, 0.2);
-      border: 1px solid rgba(255, 107, 129, 0.4);
-      color: #ff758c;
-      padding: 6px 18px;
+      background: rgba(135, 152, 106, 0.15);
+      border: 1px solid rgba(135, 152, 106, 0.35);
+      color: var(--color-oliva-oscuro);
+      padding: 7px 22px;
       border-radius: 30px;
       font-size: 13px;
       font-weight: 600;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     h1 {
-      font-size: 32px;
-      font-weight: 800;
-      background: linear-gradient(135deg, #fff 30%, #ff758c 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 8px;
-      letter-spacing: -0.5px;
+      font-family: 'Playfair Display', serif;
+      font-size: 34px;
+      font-weight: 700;
+      color: var(--color-oliva-oscuro);
+      margin-bottom: 10px;
+      line-height: 1.2;
     }
 
     .subtitulo {
-      color: #d1d5db;
+      color: var(--color-texto-muted);
       font-size: 15px;
       font-weight: 400;
     }
 
-    /* Carta de amor */
+    /* Carta estilo pergamino beige / blanco moderno */
     .carta-container {
-      background: rgba(255, 255, 255, 0.06);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: var(--color-beige-card);
+      border: 2px solid rgba(197, 160, 89, 0.4);
       border-radius: 28px;
-      padding: 30px 26px;
+      padding: 34px 28px;
       width: 100%;
-      margin-bottom: 35px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+      margin-bottom: 38px;
+      box-shadow: 0 20px 45px rgba(85, 107, 47, 0.08), 0 4px 15px rgba(197, 160, 89, 0.12);
       position: relative;
       animation: fadeInUp 1s ease-out 0.2s both;
     }
 
     .carta-adorno {
       position: absolute;
-      top: -15px;
-      right: 25px;
-      background: linear-gradient(135deg, #ff416c, #ff4b2b);
-      width: 36px;
-      height: 36px;
+      top: -16px;
+      right: 28px;
+      background: linear-gradient(135deg, var(--color-dorado-brillo), var(--color-dorado));
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 18px;
-      box-shadow: 0 4px 15px rgba(255, 65, 108, 0.5);
+      box-shadow: 0 4px 15px rgba(197, 160, 89, 0.45);
+      border: 2px solid #ffffff;
     }
 
     .carta-titulo {
-      font-family: 'Caveat', cursive;
-      font-size: 30px;
-      color: #ff9ff3;
-      margin-bottom: 15px;
-      line-height: 1.2;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 24px;
+      color: var(--color-oliva-oscuro);
+      margin-bottom: 18px;
     }
 
     .carta-cuerpo {
-      color: #e5e7eb;
+      color: var(--color-texto);
       font-size: 15px;
-      line-height: 1.8;
-      font-weight: 300;
+      line-height: 1.85;
+      font-weight: 400;
       white-space: pre-line;
     }
 
     .carta-firma {
       font-family: 'Caveat', cursive;
-      font-size: 26px;
-      color: #feca57;
+      font-size: 28px;
+      color: var(--color-dorado);
       text-align: right;
-      margin-top: 20px;
+      margin-top: 22px;
+      font-weight: 700;
     }
 
-    /* Galería polaroid / fotos */
+    /* Galería polaroids */
     .seccion-fotos-titulo {
-      font-size: 22px;
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
       font-weight: 700;
-      color: #fff;
-      margin-bottom: 20px;
-      text-align: center;
+      color: var(--color-oliva-oscuro);
+      margin-bottom: 22px;
       display: flex;
       align-items: center;
       gap: 10px;
@@ -166,20 +168,20 @@
     .galeria {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 24px;
+      gap: 26px;
       width: 100%;
-      margin-bottom: 35px;
+      margin-bottom: 40px;
     }
 
-    /* Tarjeta estilo polaroid moderna */
     .polaroid {
       background: #ffffff;
-      padding: 14px 14px 22px 14px;
-      border-radius: 18px;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-      color: #2d3436;
+      padding: 14px 14px 20px 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(197, 160, 89, 0.25);
+      box-shadow: 0 15px 35px rgba(85, 107, 47, 0.1);
+      color: var(--color-texto);
       text-align: center;
-      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transition: transform 0.3s ease;
     }
 
     .polaroid:nth-child(odd) {
@@ -196,13 +198,9 @@
     .polaroid-img-box {
       width: 100%;
       height: 280px;
-      border-radius: 12px;
+      border-radius: 14px;
       overflow: hidden;
-      background: #f1f2f6;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
+      background: #eaece5;
     }
 
     .polaroid-img-box img {
@@ -214,17 +212,17 @@
     .polaroid-caption {
       font-family: 'Caveat', cursive;
       font-size: 22px;
-      color: #2d3436;
+      color: var(--color-oliva-oscuro);
       margin-top: 14px;
       font-weight: 700;
     }
 
-    /* Botón Volver al Cofre */
+    /* Botón Volver */
     .btn-volver {
-      background: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      color: #fff;
-      padding: 14px 32px;
+      background: #ffffff;
+      border: 2px solid var(--color-oliva-suave);
+      color: var(--color-oliva-oscuro);
+      padding: 14px 34px;
       border-radius: 40px;
       font-size: 15px;
       font-weight: 600;
@@ -233,11 +231,12 @@
       align-items: center;
       gap: 10px;
       transition: all 0.25s ease;
-      backdrop-filter: blur(8px);
+      box-shadow: 0 6px 20px rgba(135, 152, 106, 0.18);
     }
 
     .btn-volver:hover {
-      background: rgba(255, 255, 255, 0.22);
+      background: var(--color-oliva-suave);
+      color: #ffffff;
       transform: translateY(-2px);
     }
 
@@ -254,24 +253,23 @@
 </head>
 <body>
 
-  <div class="bg-gradient"></div>
-  <div class="stars"></div>
+  <div class="bg-pattern"></div>
 
   <div class="container">
     <div class="header">
-      <span class="tag-romantico">Nuestro Aniversario</span>
+      <span class="tag-oliva">Nuestra Historia</span>
       <h1>Un pequeño detalle para ti ✨</h1>
-      <p class="subtitulo">Porque cada momento a tu lado es inolvidable</p>
+      <p class="subtitulo">Porque cada día a tu lado es un regalo</p>
     </div>
 
     <!-- Carta Romántica -->
     <div class="carta-container">
-      <div class="carta-adorno">💌</div>
+      <div class="carta-adorno">🌿</div>
       <div class="carta-titulo">Para el amor de mi vida...</div>
       <div class="carta-cuerpo">
-Hoy celebramos otro capítulo más de nuestra historia juntos. No encuentro palabras suficientes para agradecerte por tu sonrisa, por tus abrazos sinceros, por cada risa compartida y por estar conmigo en cada momento.
+Hoy celebramos otro hermoso capítulo de nuestra historia juntos. No encuentro palabras suficientes para agradecerte por tu sonrisa, por tus abrazos sinceros, por cada risa compartida y por estar conmigo en cada paso del camino.
 
-Elegirte ha sido y siempre será la decisión más hermosa de mi vida. Gracias por hacerme inmensamente feliz y por llenar mis días de amor y complicidad.
+Elegirte ha sido y siempre será la decisión más bonita de mi vida. Gracias por llenar mis días de paz, alegría y complicidad.
 
 ¡Feliz Aniversario mi amor! ❤️
       </div>
@@ -281,7 +279,7 @@ Elegirte ha sido y siempre será la decisión más hermosa de mi vida. Gracias p
     <!-- Recuerdos -->
     <div class="seccion-fotos-titulo">
       <span>📸</span>
-      <span>Nuestros Recuerdos</span>
+      <span>Nuestros Momentos</span>
       <span>✨</span>
     </div>
 
@@ -297,32 +295,31 @@ Elegirte ha sido y siempre será la decisión más hermosa de mi vida. Gracias p
         <div class="polaroid-img-box">
           <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=800&q=80" alt="Amor">
         </div>
-        <div class="polaroid-caption">Risas que nunca se olvidan ✨</div>
+        <div class="polaroid-caption">Risas que alegran el alma ✨</div>
       </div>
 
       <div class="polaroid">
         <div class="polaroid-img-box">
           <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=800&q=80" alt="Para siempre">
         </div>
-        <div class="polaroid-caption">Por miles de aventuras más juntos 🥂❤️</div>
+        <div class="polaroid-caption">Por muchos años más juntos 🥂🌿</div>
       </div>
     </div>
 
-    <!-- Botón para regresar al cofre -->
+    <!-- Botón Volver -->
     <a href="./index.html" class="btn-volver">
       <span>⏪</span>
-      <span>Volver al Cofre Mágico</span>
+      <span>Volver al Cofre</span>
     </a>
   </div>
 
   <script>
-    // Confeti de bienvenida al cargar la carta
     window.addEventListener('load', () => {
       confetti({
-        particleCount: 60,
-        spread: 80,
+        particleCount: 50,
+        spread: 75,
         origin: { y: 0.3 },
-        colors: ['#ff4757', '#ff6b81', '#feca57', '#ff9ff3', '#ffffff']
+        colors: ['#c5a059', '#87986a', '#dfc285', '#ffffff']
       });
     });
   </script>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Nuestra Historia de Amor ❤️</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: #0f0c20;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* Fondo degradado suave romántico */
+    .bg-gradient {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 50% 10%, #3a1c71 0%, #1e1035 50%, #0d0614 100%);
+      z-index: -2;
+    }
+
+    /* Estrellas / partículas de fondo */
+    .stars {
+      position: fixed;
+      inset: 0;
+      background-image: 
+        radial-gradient(2px 2px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 40px 70px, #ff9ff3, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 90px 40px, #fff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 160px 120px, #feca57, rgba(0,0,0,0));
+      background-repeat: repeat;
+      background-size: 200px 200px;
+      opacity: 0.3;
+      z-index: -1;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 30px 20px 80px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Encabezado */
+    .header {
+      text-align: center;
+      margin-top: 15px;
+      margin-bottom: 30px;
+      animation: fadeInDown 1s ease-out;
+    }
+
+    .tag-romantico {
+      display: inline-block;
+      background: rgba(255, 107, 129, 0.2);
+      border: 1px solid rgba(255, 107, 129, 0.4);
+      color: #ff758c;
+      padding: 6px 18px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #fff 30%, #ff758c 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+
+    .subtitulo {
+      color: #d1d5db;
+      font-size: 15px;
+      font-weight: 400;
+    }
+
+    /* Carta de amor */
+    .carta-container {
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 28px;
+      padding: 30px 26px;
+      width: 100%;
+      margin-bottom: 35px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+      position: relative;
+      animation: fadeInUp 1s ease-out 0.2s both;
+    }
+
+    .carta-adorno {
+      position: absolute;
+      top: -15px;
+      right: 25px;
+      background: linear-gradient(135deg, #ff416c, #ff4b2b);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      box-shadow: 0 4px 15px rgba(255, 65, 108, 0.5);
+    }
+
+    .carta-titulo {
+      font-family: 'Caveat', cursive;
+      font-size: 30px;
+      color: #ff9ff3;
+      margin-bottom: 15px;
+      line-height: 1.2;
+    }
+
+    .carta-cuerpo {
+      color: #e5e7eb;
+      font-size: 15px;
+      line-height: 1.8;
+      font-weight: 300;
+      white-space: pre-line;
+    }
+
+    .carta-firma {
+      font-family: 'Caveat', cursive;
+      font-size: 26px;
+      color: #feca57;
+      text-align: right;
+      margin-top: 20px;
+    }
+
+    /* Galería polaroid / fotos */
+    .seccion-fotos-titulo {
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 20px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .galeria {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      width: 100%;
+      margin-bottom: 35px;
+    }
+
+    /* Tarjeta estilo polaroid moderna */
+    .polaroid {
+      background: #ffffff;
+      padding: 14px 14px 22px 14px;
+      border-radius: 18px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+      color: #2d3436;
+      text-align: center;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .polaroid:nth-child(odd) {
+      transform: rotate(-1.5deg);
+    }
+    .polaroid:nth-child(even) {
+      transform: rotate(1.5deg);
+    }
+
+    .polaroid:hover {
+      transform: scale(1.02) rotate(0deg);
+    }
+
+    .polaroid-img-box {
+      width: 100%;
+      height: 280px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #f1f2f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .polaroid-img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .polaroid-caption {
+      font-family: 'Caveat', cursive;
+      font-size: 22px;
+      color: #2d3436;
+      margin-top: 14px;
+      font-weight: 700;
+    }
+
+    /* Botón Volver al Cofre */
+    .btn-volver {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #fff;
+      padding: 14px 32px;
+      border-radius: 40px;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.25s ease;
+      backdrop-filter: blur(8px);
+    }
+
+    .btn-volver:hover {
+      background: rgba(255, 255, 255, 0.22);
+      transform: translateY(-2px);
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-25px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(25px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-gradient"></div>
+  <div class="stars"></div>
+
+  <div class="container">
+    <div class="header">
+      <span class="tag-romantico">Nuestro Aniversario</span>
+      <h1>Un pequeño detalle para ti ✨</h1>
+      <p class="subtitulo">Porque cada momento a tu lado es inolvidable</p>
+    </div>
+
+    <!-- Carta Romántica -->
+    <div class="carta-container">
+      <div class="carta-adorno">💌</div>
+      <div class="carta-titulo">Para el amor de mi vida...</div>
+      <div class="carta-cuerpo">
+Hoy celebramos otro capítulo más de nuestra historia juntos. No encuentro palabras suficientes para agradecerte por tu sonrisa, por tus abrazos sinceros, por cada risa compartida y por estar conmigo en cada momento.
+
+Elegirte ha sido y siempre será la decisión más hermosa de mi vida. Gracias por hacerme inmensamente feliz y por llenar mis días de amor y complicidad.
+
+¡Feliz Aniversario mi amor! ❤️
+      </div>
+      <div class="carta-firma">Con todo mi amor, para siempre.</div>
+    </div>
+
+    <!-- Recuerdos -->
+    <div class="seccion-fotos-titulo">
+      <span>📸</span>
+      <span>Nuestros Recuerdos</span>
+      <span>✨</span>
+    </div>
+
+    <div class="galeria">
+      <div class="polaroid">
+        <div class="polaroid-img-box">
+          <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=800&q=80" alt="Momentos Juntos">
+        </div>
+        <div class="polaroid-caption">Cada momento a tu lado es un tesoro 💕</div>
+      </div>
+
+      <div class="polaroid">
+        <div class="polaroid-img-box">
+          <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=800&q=80" alt="Amor">
+        </div>
+        <div class="polaroid-caption">Risas que nunca se olvidan ✨</div>
+      </div>
+
+      <div class="polaroid">
+        <div class="polaroid-img-box">
+          <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=800&q=80" alt="Para siempre">
+        </div>
+        <div class="polaroid-caption">Por miles de aventuras más juntos 🥂❤️</div>
+      </div>
+    </div>
+
+    <!-- Botón para regresar al cofre -->
+    <a href="./index.html" class="btn-volver">
+      <span>⏪</span>
+      <span>Volver al Cofre Mágico</span>
+    </a>
+  </div>
+
+  <script>
+    // Confeti de bienvenida al cargar la carta
+    window.addEventListener('load', () => {
+      confetti({
+        particleCount: 60,
+        spread: 80,
+        origin: { y: 0.3 },
+        colors: ['#ff4757', '#ff6b81', '#feca57', '#ff9ff3', '#ffffff']
+      });
+    });
+  </script>
+</body>
+</html>

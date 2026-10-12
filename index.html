@@ -4,149 +4,167 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>Nuestra Sorpresa de Aniversario ❤️</title>
-  
-  <!-- A-Frame y AR.js -->
-  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
-  <!-- Canvas Confetti -->
+
+  <!-- Google Model-Viewer: El estándar moderno oficial para Realidad Aumentada móvil -->
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+  <!-- Confeti festivo -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
 
   <style>
     * {
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
-    }
-
-    body {
       margin: 0;
+      padding: 0;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
       overflow: hidden;
-      font-family: 'Poppins', 'Segoe UI', system-ui, -apple-system, sans-serif;
-      user-select: none;
-    }
-
-    /* Guía superior / Indicador de estado */
-    .ar-status {
-      position: fixed;
-      top: 18px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 99999;
-      background: rgba(15, 23, 42, 0.75);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at top, #2b1055 0%, #11052C 60%, #000000 100%);
       color: #fff;
-      padding: 10px 22px;
-      border-radius: 30px;
-      font-size: 14px;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      transition: all 0.3s ease;
-      max-width: 90%;
-      text-align: center;
     }
 
-    .status-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #ff4757;
-      animation: pulse 1.5s infinite;
-      flex-shrink: 0;
+    /* Visor 3D y AR a pantalla completa */
+    model-viewer {
+      width: 100%;
+      height: 100%;
+      --poster-color: transparent;
+      outline: none;
     }
 
-    .status-dot.active {
-      background: #2ed573;
+    /* Decoración de fondo de corazones flotantes */
+    .bg-particles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.85); }
+    .heart-float {
+      position: absolute;
+      bottom: -20px;
+      font-size: 20px;
+      opacity: 0.25;
+      animation: floatUp 8s infinite linear;
     }
 
-    /* Contenedor UI inferior */
-    .ui-overlay {
-      position: fixed;
-      bottom: 25px;
+    @keyframes floatUp {
+      0% { transform: translateY(0) rotate(0deg); opacity: 0.25; }
+      100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* Encabezado elegante */
+    .header-tag {
+      position: absolute;
+      top: 24px;
       left: 50%;
       transform: translateX(-50%);
-      z-index: 99999;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 8px 24px;
+      border-radius: 40px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #ff9ff3;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      text-align: center;
+      letter-spacing: 0.5px;
+    }
+
+    /* Controles y tarjetas inferiores */
+    .bottom-controls {
+      position: absolute;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 92%;
+      max-width: 440px;
+      z-index: 20;
       display: flex;
       flex-direction: column;
       align-items: center;
-      width: 90%;
-      max-width: 420px;
-      pointer-events: none;
+      gap: 14px;
     }
 
-    .interactive-element {
-      pointer-events: auto;
-    }
-
-    /* Tarjeta del mensaje */
-    .card-mensaje {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+    /* Tarjeta del mensaje sorpresa */
+    .love-card {
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      color: #1f2937;
       padding: 22px 26px;
-      border-radius: 24px;
-      text-align: center;
-      margin-bottom: 16px;
-      box-shadow: 0 15px 35px rgba(220, 38, 38, 0.2), 0 5px 15px rgba(0,0,0,0.08);
-      border: 2px solid rgba(255, 107, 129, 0.3);
-      display: none;
-      animation: slideUpBounce 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      border-radius: 26px;
       width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 45px rgba(255, 71, 87, 0.35), 0 5px 15px rgba(0,0,0,0.2);
+      border: 2px solid #ff758c;
+      display: none;
+      animation: popIn 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
     }
 
-    .card-mensaje h2 {
-      margin: 0 0 8px 0;
-      color: #ff3366;
+    .love-card h2 {
+      color: #ff4757;
       font-size: 24px;
       font-weight: 800;
-      letter-spacing: -0.5px;
-      text-shadow: 0 2px 4px rgba(255, 51, 102, 0.15);
+      margin-bottom: 8px;
+      letter-spacing: -0.3px;
     }
 
-    .card-mensaje p {
-      margin: 0;
-      color: #4b5563;
+    .love-card p {
       font-size: 15px;
-      line-height: 1.45;
-      font-weight: 500;
+      line-height: 1.5;
+      color: #4b5563;
+      font-weight: 600;
     }
 
-    .card-mensaje .destacado {
-      color: #e11d48;
-      font-weight: 700;
+    @keyframes popIn {
+      0% { opacity: 0; transform: translateY(30px) scale(0.9); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    /* Botón Abrir Mágico */
+    /* Grupo de botones */
+    .button-group {
+      display: flex;
+      gap: 12px;
+      width: 100%;
+      justify-content: center;
+    }
+
+    /* Botón Abrir */
     .btn-abrir {
+      flex: 1;
       background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
       color: white;
       border: none;
-      padding: 16px 42px;
-      font-size: 18px;
+      padding: 16px 24px;
+      font-size: 17px;
       font-weight: 700;
       border-radius: 50px;
       cursor: pointer;
-      box-shadow: 0 8px 25px rgba(255, 65, 108, 0.45);
+      box-shadow: 0 10px 28px rgba(255, 65, 108, 0.45);
       display: flex;
       align-items: center;
-      gap: 12px;
-      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.25s ease;
       position: relative;
       overflow: hidden;
     }
 
     .btn-abrir:hover {
       transform: translateY(-2px) scale(1.02);
-      box-shadow: 0 12px 30px rgba(255, 65, 108, 0.55);
+      box-shadow: 0 14px 34px rgba(255, 65, 108, 0.55);
     }
 
     .btn-abrir:active {
@@ -162,252 +180,182 @@
       height: 200%;
       background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.4) 50%, transparent 60%);
       transform: rotate(45deg);
-      animation: brillo 3s infinite;
+      animation: shine 3s infinite;
     }
 
-    @keyframes brillo {
+    @keyframes shine {
       0% { transform: translateX(-100%) rotate(45deg); }
       100% { transform: translateX(100%) rotate(45deg); }
     }
 
-    @keyframes slideUpBounce {
-      0% {
-        opacity: 0;
-        transform: translateY(40px) scale(0.9);
-      }
-      70% {
-        opacity: 1;
-        transform: translateY(-8px) scale(1.02);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-
-    /* Ayuda de cómo escanear */
-    .modal-ayuda {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.8);
-      z-index: 100000;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 24px;
-      backdrop-filter: blur(5px);
-      transition: opacity 0.4s ease;
-    }
-
-    .modal-contenido {
-      background: #ffffff;
-      padding: 28px;
-      border-radius: 28px;
-      text-align: center;
-      max-width: 340px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-    }
-
-    .modal-contenido h3 {
-      margin-top: 0;
-      color: #1f2937;
-      font-size: 20px;
-    }
-
-    .modal-contenido p {
-      color: #6b7280;
-      font-size: 14px;
-      line-height: 1.5;
-      margin-bottom: 22px;
-    }
-
-    .btn-entendido {
-      background: #111827;
+    /* Botón de Realidad Aumentada nativa */
+    .btn-ar {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.35);
       color: white;
-      border: none;
-      padding: 12px 30px;
+      padding: 16px 20px;
       font-size: 15px;
-      font-weight: 600;
-      border-radius: 25px;
+      font-weight: 700;
+      border-radius: 50px;
       cursor: pointer;
-      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.25s ease;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-ar:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    /* Banner de ayuda inicial */
+    .touch-hint {
+      position: absolute;
+      top: 75px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(6px);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      color: #e5e7eb;
+      pointer-events: none;
+      z-index: 5;
     }
   </style>
 </head>
 <body>
 
-  <!-- Mensaje de bienvenida / instrucciones iniciales -->
-  <div id="modal-ayuda" class="modal-ayuda">
-    <div class="modal-contenido">
-      <div style="font-size: 46px; margin-bottom: 12px;">🎁</div>
-      <h3>¡Sorpresa Especial!</h3>
-      <p>Apunta la cámara de tu móvil hacia el código o marcador Hiro para descubrir lo que hay dentro del cofre.</p>
-      <button class="btn-entendido" onclick="cerrarAyuda()">¡Comenzar!</button>
+  <!-- Partículas de fondo -->
+  <div class="bg-particles" id="bg-particles"></div>
+
+  <!-- Etiqueta superior -->
+  <div class="header-tag">✨ Sorpresa de Aniversario ✨</div>
+
+  <div class="touch-hint">👆 Puedes girar y hacer zoom al cofre con los dedos</div>
+
+  <!-- Visor 3D y AR: Sin marcadores raros, con escala y cámara normal -->
+  <model-viewer 
+    id="visor-cofre"
+    src="./cofre.glb" 
+    alt="Cofre del Tesoro de Aniversario"
+    ar 
+    ar-modes="webxr scene-viewer quick-look"
+    ar-scale="auto"
+    camera-controls 
+    shadow-intensity="1.5"
+    shadow-softness="0.8"
+    camera-orbit="0deg 75deg 105%"
+    min-camera-orbit="auto auto 50%"
+    max-camera-orbit="auto auto 250%"
+    exposure="1.2">
+  </model-viewer>
+
+  <!-- Controles Inferiores -->
+  <div class="bottom-controls">
+    <!-- Tarjeta del mensaje revelado -->
+    <div class="love-card" id="love-card">
+      <h2>🎉 ¡Feliz Aniversario! 🎉</h2>
+      <p>Te amo con todo mi corazón mi amor ❤️<br>¡Gracias por hacerme tan feliz cada día!</p>
+    </div>
+
+    <!-- Fila de Botones -->
+    <div class="button-group">
+      <button class="btn-abrir" id="btn-abrir">
+        <span>✨</span>
+        <span id="btn-texto">Abrir Cofre</span>
+        <span>🔓</span>
+      </button>
+
+      <!-- Botón que activa la cámara AR en el suelo/mesa -->
+      <button class="btn-ar" id="btn-ar-trigger">
+        <span style="font-size: 18px;">📱</span>
+        <span>Ver en mi mesa (AR)</span>
+      </button>
     </div>
   </div>
-
-  <!-- Barra de estado -->
-  <div class="ar-status" id="ar-status">
-    <span class="status-dot" id="status-dot"></span>
-    <span id="status-text">Buscando marcador con la cámara...</span>
-  </div>
-
-  <!-- Capa UI -->
-  <div class="ui-overlay">
-    <div class="card-mensaje interactive-element" id="card-mensaje">
-      <h2>✨ ¡Feliz Aniversario! ✨</h2>
-      <p>Te amo con todo mi corazón mi vida ❤️</p>
-      <p style="margin-top: 6px; font-size: 13px; color: #9ca3af;">Gracias por cada momento a tu lado.</p>
-    </div>
-    
-    <button class="btn-abrir interactive-element" id="btn-abrir">
-      <span>✨</span>
-      <span id="btn-texto">Abrir Cofre</span>
-      <span>🔓</span>
-    </button>
-  </div>
-
-  <!-- Escena A-Frame AR.js -->
-  <a-scene 
-    embedded 
-    arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
-    renderer="logarithmicDepthBuffer: true; antialias: true; alpha: true;"
-    vr-mode-ui="enabled: false">
-    
-    <a-assets>
-      <a-asset-item id="cofre-glb" src="./cofre.glb"></a-asset-item>
-    </a-assets>
-
-    <!-- Marcador Hiro -->
-    <a-marker id="hiro-marker" preset="hiro" emitevents="true" smooth="true" smoothCount="5">
-      <!-- Contenedor del Cofre -->
-      <a-entity 
-        id="entidad-cofre"
-        gltf-model="#cofre-glb" 
-        scale="2 2 2" 
-        position="0 0 0" 
-        rotation="-90 0 0">
-      </a-entity>
-
-      <!-- Texto flotante 3D que emerge sobre el cofre -->
-      <a-entity 
-        id="texto-3d-amor" 
-        position="0 1.2 0" 
-        rotation="-45 0 0"
-        visible="false">
-        <a-text 
-          value="Feliz Aniversario\nMi Amor" 
-          align="center" 
-          color="#ff2a6d" 
-          width="4" 
-          font="kelsonsans"
-          side="double">
-        </a-text>
-      </a-entity>
-    </a-marker>
-
-    <!-- Cámara -->
-    <a-entity camera></a-entity>
-  </a-scene>
 
   <script>
+    const visor = document.getElementById('visor-cofre');
     const btnAbrir = document.getElementById('btn-abrir');
     const btnTexto = document.getElementById('btn-texto');
-    const cardMensaje = document.getElementById('card-mensaje');
-    const entidadCofre = document.getElementById('entidad-cofre');
-    const texto3D = document.getElementById('texto-3d-amor');
-    const marker = document.getElementById('hiro-marker');
-    const statusText = document.getElementById('status-text');
-    const statusDot = document.getElementById('status-dot');
+    const loveCard = document.getElementById('love-card');
+    const btnAr = document.getElementById('btn-ar-trigger');
 
     let cofreAbierto = false;
-    let marcadorVisible = false;
 
-    function cerrarAyuda() {
-      const modal = document.getElementById('modal-ayuda');
-      modal.style.opacity = '0';
-      setTimeout(() => {
-        modal.style.display = 'none';
-      }, 400);
-    }
-
-    // Eventos de detección del marcador
-    marker.addEventListener('markerFound', () => {
-      marcadorVisible = true;
-      statusDot.classList.add('active');
-      statusText.innerText = "¡Cofre detectado! Pulsa abrir 👇";
+    // Disparar modo AR nativo al pulsar el botón de cámara
+    btnAr.addEventListener('click', () => {
+      visor.activateAR();
     });
 
-    marker.addEventListener('markerLost', () => {
-      marcadorVisible = false;
-      statusDot.classList.remove('active');
-      statusText.innerText = "Apunta al marcador para ver el cofre...";
-    });
-
-    // Disparar confeti de celebración
-    function lanzarConfeti() {
-      const duration = 3.5 * 1000;
-      const animationEnd = Date.now() + duration;
-      const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 100000 };
-
-      const interval = setInterval(function() {
-        const timeLeft = animationEnd - Date.now();
-        if (timeLeft <= 0) {
-          return clearInterval(interval);
-        }
-        const particleCount = 50 * (timeLeft / duration);
-        confetti(Object.assign({}, defaults, { 
-          particleCount, 
-          origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
-          colors: ['#ff4757', '#ff6b81', '#ffd32a', '#ff9ff3', '#ffffff']
-        }));
-        confetti(Object.assign({}, defaults, { 
-          particleCount, 
-          origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
-          colors: ['#ff4757', '#ff6b81', '#ffd32a', '#ff9ff3', '#ffffff']
-        }));
-      }, 250);
-    }
-
-    function randomInRange(min, max) {
-      return Math.random() * (max - min) + min;
-    }
-
-    // Acción al presionar el botón de abrir
+    // Acción de Abrir Cofre
     btnAbrir.addEventListener('click', () => {
       if (!cofreAbierto) {
-        // 1. Mostrar tarjeta y texto en pantalla
-        cardMensaje.style.display = 'block';
+        // 1. Mostrar tarjeta con el mensaje de amor
+        loveCard.style.display = 'block';
 
-        // 2. Activar animación "Scene" del cofre
-        entidadCofre.setAttribute('animation-mixer', {
-          clip: 'Scene',
-          loop: 'once',
-          clampWhenFinished: true
-        });
+        // 2. Reproducir la animación oficial del cofre ('Scene')
+        visor.animationName = 'Scene';
+        visor.loop = false;
+        visor.play({ repetitions: 1 });
 
-        // 3. Mostrar texto 3D flotante con animación suave
-        setTimeout(() => {
-          if (texto3D) {
-            texto3D.setAttribute('visible', 'true');
-            texto3D.setAttribute('animation', 'property: position; to: 0 1.8 0; dur: 1200; easing: easeOutBack');
-          }
-        }, 1200);
-
-        // 4. Fiesta de Confeti
+        // 3. Disparar confeti por toda la pantalla
         lanzarConfeti();
 
-        // 5. Actualizar botón
+        // 4. Transformar botón a estado de celebración
         btnTexto.innerText = "¡Abierto! ❤️";
         btnAbrir.style.background = "linear-gradient(135deg, #10b981 0%, #059669 100%)";
-        btnAbrir.style.boxShadow = "0 8px 25px rgba(16, 185, 129, 0.4)";
+        btnAbrir.style.boxShadow = "0 10px 28px rgba(16, 185, 129, 0.4)";
         cofreAbierto = true;
       } else {
-        // Si vuelve a tocarlo, celebrar con más confeti
         lanzarConfeti();
       }
     });
+
+    // Confeti festivo
+    function lanzarConfeti() {
+      const end = Date.now() + (3.5 * 1000);
+      const colors = ['#ff4757', '#ff6b81', '#ffd32a', '#ff9ff3', '#ffffff', '#2ed573'];
+
+      (function frame() {
+        confetti({
+          particleCount: 5,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 },
+          colors: colors
+        });
+        confetti({
+          particleCount: 5,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 },
+          colors: colors
+        });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      }());
+    }
+
+    // Decoración de corazones flotantes
+    const bgContainer = document.getElementById('bg-particles');
+    for (let i = 0; i < 15; i++) {
+      const heart = document.createElement('div');
+      heart.className = 'heart-float';
+      heart.innerText = ['❤️', '💖', '✨', '💕'][Math.floor(Math.random() * 4)];
+      heart.style.left = Math.random() * 100 + '%';
+      heart.style.animationDelay = (Math.random() * 7) + 's';
+      heart.style.animationDuration = (6 + Math.random() * 6) + 's';
+      heart.style.fontSize = (16 + Math.random() * 18) + 'px';
+      bgContainer.appendChild(heart);
+    }
   </script>
 </body>
 </html>

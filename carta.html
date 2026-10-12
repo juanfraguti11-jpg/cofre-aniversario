@@ -15,14 +15,14 @@
 
   <style>
     :root {
-      --color-beige-bg: #fbf9f5;
-      --color-beige-card: #ffffff;
-      --color-oliva-suave: #87986a;
-      --color-oliva-oscuro: #556b2f;
+      --color-beige-bg: #f8f6f0;
+      --color-blanco: #ffffff;
+      --color-oliva-claro: #8a9e70;
+      --color-oliva-oscuro: #4c5d30;
       --color-dorado: #c5a059;
-      --color-dorado-brillo: #dfc285;
-      --color-texto: #333a2c;
-      --color-texto-muted: #6b7264;
+      --color-dorado-brillo: #e4c88e;
+      --color-texto: #333a2b;
+      --color-texto-muted: #6f7865;
     }
 
     * {
@@ -46,11 +46,11 @@
       position: fixed;
       inset: 0;
       background-image: 
-        radial-gradient(var(--color-oliva-suave) 0.6px, transparent 0.6px),
-        radial-gradient(var(--color-dorado) 0.6px, var(--color-beige-bg) 0.6px);
-      background-size: 28px 28px;
-      background-position: 0 0, 14px 14px;
-      opacity: 0.22;
+        radial-gradient(var(--color-oliva-claro) 0.8px, transparent 0.8px),
+        radial-gradient(var(--color-dorado) 0.8px, var(--color-beige-bg) 0.8px);
+      background-size: 32px 32px;
+      background-position: 0 0, 16px 16px;
+      opacity: 0.28;
       z-index: -1;
     }
 
@@ -72,16 +72,17 @@
 
     .tag-oliva {
       display: inline-block;
-      background: rgba(135, 152, 106, 0.15);
-      border: 1px solid rgba(135, 152, 106, 0.35);
+      background: rgba(138, 158, 112, 0.16);
+      border: 1.5px solid var(--color-oliva-claro);
       color: var(--color-oliva-oscuro);
-      padding: 7px 22px;
+      padding: 8px 24px;
       border-radius: 30px;
       font-size: 13px;
       font-weight: 600;
       letter-spacing: 1.5px;
       text-transform: uppercase;
       margin-bottom: 14px;
+      box-shadow: 0 4px 14px rgba(138, 158, 112, 0.15);
     }
 
     h1 {
@@ -90,7 +91,7 @@
       font-weight: 700;
       color: var(--color-oliva-oscuro);
       margin-bottom: 10px;
-      line-height: 1.2;
+      line-height: 1.25;
     }
 
     .subtitulo {
@@ -99,15 +100,15 @@
       font-weight: 400;
     }
 
-    /* Carta estilo pergamino beige / blanco moderno */
+    /* Carta estilo pergamino beige / blanco moderno con bordes dorados */
     .carta-container {
-      background: var(--color-beige-card);
-      border: 2px solid rgba(197, 160, 89, 0.4);
+      background: var(--color-blanco);
+      border: 2px solid var(--color-dorado);
       border-radius: 28px;
       padding: 34px 28px;
       width: 100%;
       margin-bottom: 38px;
-      box-shadow: 0 20px 45px rgba(85, 107, 47, 0.08), 0 4px 15px rgba(197, 160, 89, 0.12);
+      box-shadow: 0 20px 45px rgba(76, 93, 48, 0.09), 0 0 25px rgba(197, 160, 89, 0.18);
       position: relative;
       animation: fadeInUp 1s ease-out 0.2s both;
     }
@@ -117,21 +118,21 @@
       top: -16px;
       right: 28px;
       background: linear-gradient(135deg, var(--color-dorado-brillo), var(--color-dorado));
-      width: 38px;
-      height: 38px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
-      box-shadow: 0 4px 15px rgba(197, 160, 89, 0.45);
+      font-size: 20px;
+      box-shadow: 0 4px 15px rgba(197, 160, 89, 0.5);
       border: 2px solid #ffffff;
     }
 
     .carta-titulo {
       font-family: 'Playfair Display', serif;
       font-style: italic;
-      font-size: 24px;
+      font-size: 25px;
       color: var(--color-oliva-oscuro);
       margin-bottom: 18px;
     }
@@ -175,10 +176,10 @@
 
     .polaroid {
       background: #ffffff;
-      padding: 14px 14px 20px 14px;
+      padding: 15px 15px 22px 15px;
       border-radius: 20px;
-      border: 1px solid rgba(197, 160, 89, 0.25);
-      box-shadow: 0 15px 35px rgba(85, 107, 47, 0.1);
+      border: 1.5px solid rgba(197, 160, 89, 0.35);
+      box-shadow: 0 15px 35px rgba(76, 93, 48, 0.1);
       color: var(--color-texto);
       text-align: center;
       transition: transform 0.3s ease;
@@ -197,7 +198,7 @@
 
     .polaroid-img-box {
       width: 100%;
-      height: 280px;
+      height: 290px;
       border-radius: 14px;
       overflow: hidden;
       background: #eaece5;
@@ -217,12 +218,12 @@
       font-weight: 700;
     }
 
-    /* Botón Volver */
+    /* Botón Volver al Cofre */
     .btn-volver {
-      background: #ffffff;
-      border: 2px solid var(--color-oliva-suave);
+      background: var(--color-blanco);
+      border: 2px solid var(--color-oliva-claro);
       color: var(--color-oliva-oscuro);
-      padding: 14px 34px;
+      padding: 15px 36px;
       border-radius: 40px;
       font-size: 15px;
       font-weight: 600;
@@ -231,11 +232,11 @@
       align-items: center;
       gap: 10px;
       transition: all 0.25s ease;
-      box-shadow: 0 6px 20px rgba(135, 152, 106, 0.18);
+      box-shadow: 0 6px 20px rgba(138, 158, 112, 0.2);
     }
 
     .btn-volver:hover {
-      background: var(--color-oliva-suave);
+      background: var(--color-oliva-claro);
       color: #ffffff;
       transform: translateY(-2px);
     }
@@ -316,10 +317,10 @@ Elegirte ha sido y siempre será la decisión más bonita de mi vida. Gracias po
   <script>
     window.addEventListener('load', () => {
       confetti({
-        particleCount: 50,
-        spread: 75,
+        particleCount: 55,
+        spread: 80,
         origin: { y: 0.3 },
-        colors: ['#c5a059', '#87986a', '#dfc285', '#ffffff']
+        colors: ['#c5a059', '#8a9e70', '#e4c88e', '#ffffff']
       });
     });
   </script>

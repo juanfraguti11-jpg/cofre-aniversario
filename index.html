@@ -21,10 +21,10 @@
   <style>
     :root {
       --color-beige-bg: #f9f7f2;
-      --color-oliva-suave: #87986a;
-      --color-oliva-oscuro: #4a5c29;
+      --color-oliva-suave: #8a9e70;
+      --color-oliva-oscuro: #4c5d30;
       --color-dorado: #c5a059;
-      --color-dorado-brillo: #dfc285;
+      --color-dorado-brillo: #e4c88e;
       --color-blanco: #ffffff;
     }
 
@@ -55,7 +55,7 @@
       background: #202020;
     }
 
-    /* Canvas 3D transparente superpuesto a la cámara */
+    /* Canvas 3D transparente */
     #three-canvas {
       position: fixed;
       top: 0;
@@ -93,7 +93,7 @@
       color: var(--color-blanco);
       text-shadow: 
         0 0 12px rgba(197, 160, 89, 0.9), 
-        0 0 25px rgba(135, 152, 106, 0.8), 
+        0 0 25px rgba(138, 158, 112, 0.8), 
         0 3px 8px rgba(0,0,0,0.85);
       letter-spacing: -0.5px;
       line-height: 1.15;
@@ -105,7 +105,7 @@
       font-weight: 700;
       color: var(--color-dorado-brillo);
       text-shadow: 
-        0 0 10px rgba(74, 92, 41, 0.9), 
+        0 0 10px rgba(76, 93, 48, 0.9), 
         0 2px 6px rgba(0,0,0,0.85);
       line-height: 1.3;
     }
@@ -135,23 +135,22 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 12px;
-      width: 90%;
-      max-width: 380px;
+      width: 92%;
+      max-width: 400px;
     }
 
-    /* Botón Abrir: Elegante en Verde Oliva, Blanco y Dorado */
+    /* Botón Abrir: Se muestra ÚNICAMENTE después del giro inicial de 3 segundos */
     .btn-abrir {
       background: linear-gradient(135deg, var(--color-oliva-suave) 0%, var(--color-oliva-oscuro) 100%);
       color: var(--color-blanco);
       border: 2px solid var(--color-dorado-brillo);
-      padding: 16px 44px;
-      font-size: 18px;
+      padding: 17px 44px;
+      font-size: 19px;
       font-weight: 700;
       border-radius: 50px;
       cursor: pointer;
-      box-shadow: 0 10px 28px rgba(74, 92, 41, 0.5), 0 0 15px rgba(223, 194, 133, 0.4);
-      display: flex;
+      box-shadow: 0 10px 28px rgba(76, 93, 48, 0.55), 0 0 15px rgba(228, 200, 142, 0.4);
+      display: none; /* Oculto al inicio mientras gira */
       align-items: center;
       justify-content: center;
       gap: 12px;
@@ -159,6 +158,12 @@
       position: relative;
       overflow: hidden;
       width: 100%;
+      animation: aparecerBoton 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    @keyframes aparecerBoton {
+      0% { opacity: 0; transform: translateY(25px) scale(0.9); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
     }
 
     .btn-abrir:active {
@@ -182,40 +187,47 @@
       100% { transform: translateX(100%) rotate(45deg); }
     }
 
-    /* Segundo Botón Sorpresa: Blanco marfil con bordes dorados */
+    /* Segundo Botón Sorpresa: Llamativo y Romántico con Brillo Dorado */
     .btn-sorpresa {
-      background: #ffffff;
+      background: linear-gradient(135deg, #ffffff 0%, #fdfbf7 100%);
       color: var(--color-oliva-oscuro);
-      border: 2px solid var(--color-dorado);
-      padding: 16px 24px;
+      border: 2.5px solid var(--color-dorado);
+      padding: 18px 24px;
       font-size: 16px;
-      font-weight: 700;
+      font-weight: 800;
       border-radius: 50px;
       cursor: pointer;
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35), 0 0 18px rgba(197, 160, 89, 0.4);
+      box-shadow: 
+        0 14px 35px rgba(0, 0, 0, 0.35), 
+        0 0 25px rgba(197, 160, 89, 0.6),
+        inset 0 1px 0 rgba(255,255,255,1);
       display: none;
       align-items: center;
       justify-content: center;
       gap: 10px;
       width: 100%;
       text-decoration: none;
-      animation: popInBounce 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-    }
-
-    .btn-sorpresa:hover {
-      background: #fbf9f5;
+      letter-spacing: 0.3px;
+      animation: popInBounce 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, latidoDorado 2.2s infinite ease-in-out 1s;
+      position: relative;
+      overflow: hidden;
     }
 
     @keyframes popInBounce {
-      0% { opacity: 0; transform: translateY(25px) scale(0.85); }
+      0% { opacity: 0; transform: translateY(30px) scale(0.8); }
       100% { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    /* Pantalla de carga / Solicitud de permiso de cámara */
+    @keyframes latidoDorado {
+      0%, 100% { box-shadow: 0 14px 35px rgba(0, 0, 0, 0.35), 0 0 20px rgba(197, 160, 89, 0.5); transform: scale(1); }
+      50% { box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4), 0 0 35px rgba(197, 160, 89, 0.9); transform: scale(1.025); }
+    }
+
+    /* Pantalla de carga / Permiso de cámara */
     .loading-overlay {
       position: fixed;
       inset: 0;
-      background: #fbf9f5;
+      background: #f9f7f2;
       z-index: 999;
       display: flex;
       flex-direction: column;
@@ -230,7 +242,7 @@
     .spinner {
       width: 48px;
       height: 48px;
-      border: 4px solid rgba(135, 152, 106, 0.2);
+      border: 4px solid rgba(138, 158, 112, 0.2);
       border-top-color: var(--color-oliva-oscuro);
       border-radius: 50%;
       animation: spin 1s infinite linear;
@@ -257,9 +269,9 @@
 </head>
 <body>
 
-  <!-- Pantalla de carga con soporte de activación de cámara -->
+  <!-- Pantalla de carga -->
   <div id="loading" class="loading-overlay">
-    <div class="spinner" id="spinner"></div>
+    <div class="spinner"></div>
     <p id="loading-txt" style="font-weight: 600; font-size: 16px;">Iniciando cámara y Realidad Aumentada...</p>
     <button id="btn-permiso" class="btn-permiso-camara" onclick="iniciarCamaraManual()">📷 Activar Cámara</button>
   </div>
@@ -278,16 +290,18 @@
 
   <!-- Botones Inferiores -->
   <div class="bottom-ui">
+    <!-- Botón Abrir Cofre (Aparece tras el giro inicial de 3s) -->
     <button class="btn-abrir" id="btn-abrir">
       <span>✨</span>
       <span>Abrir Cofre</span>
       <span>🔓</span>
     </button>
 
+    <!-- Segundo Botón Sorpresa (Aparece 3 segundos después de que el cofre se abre) -->
     <a href="./carta.html" class="btn-sorpresa" id="btn-sorpresa">
       <span>💌</span>
-      <span>Esto no es todo, otro pequeño detalle...</span>
-      <span>👉</span>
+      <span>Esto no es todo mi amor, otro pequeño detalle...</span>
+      <span>✨</span>
     </a>
   </div>
 
@@ -305,7 +319,12 @@
     let cofreAbierto = false;
     let camaraIniciada = false;
 
-    // 1. Iniciar cámara trasera garantizando compatibilidad total en iOS Safari y Android Chrome
+    // Estados del giro inicial de 3 segundos
+    let initialSpinning = false;
+    let initialSpinStartTime = 0;
+    const SPIN_DURATION = 3000; // 3 segundos exactos
+
+    // 1. Iniciar cámara trasera
     async function startCamera() {
       if (camaraIniciada) return;
       try {
@@ -343,7 +362,7 @@
         btnPermiso.style.display = 'none';
         loadingTxt.innerText = "Cámara activada con éxito.";
       } catch (e) {
-        alert("Por favor permite el acceso a la cámara en los ajustes de tu navegador para ver la Realidad Aumentada.");
+        alert("Por favor permite el acceso a la cámara para ver la Realidad Aumentada.");
       }
     }
 
@@ -360,7 +379,7 @@
         alpha: true,
         antialias: true
       });
-      renderer.setClearColor(0x000000, 0); // Fondo 100% transparente
+      renderer.setClearColor(0x000000, 0);
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       renderer.outputEncoding = THREE.sRGBEncoding;
@@ -373,7 +392,7 @@
       dirLight1.position.set(2, 4, 3);
       scene.add(dirLight1);
 
-      const dirLight2 = new THREE.DirectionalLight(0xdfc285, 1.4);
+      const dirLight2 = new THREE.DirectionalLight(0xe4c88e, 1.4);
       dirLight2.position.set(-2, -1, 2);
       scene.add(dirLight2);
 
@@ -406,16 +425,22 @@
           const clip = THREE.AnimationClip.findByName(gltf.animations, 'Scene') || gltf.animations[0];
           const action = mixer.clipAction(clip);
           action.setLoop(THREE.LoopOnce);
+          // IMPORTANTE: clampWhenFinished para que el cofre quede permanentemente ABIERTO
           action.clampWhenFinished = true;
-          // VELOCIDAD DE APERTURA: 2.2x para abrirse rápido y dinámico
+          // Velocidad rápida
           action.timeScale = 2.2;
           window.chestAction = action;
         }
 
-        // Ocultar pantalla de carga
+        // Ocultar pantalla de carga e INICIAR EL GIRO DE PRESENTACIÓN DE 3 SEGUNDOS
         setTimeout(() => {
           loadingScreen.style.opacity = '0';
-          setTimeout(() => loadingScreen.style.display = 'none', 450);
+          setTimeout(() => {
+            loadingScreen.style.display = 'none';
+            // Arrancar giro de 3 segundos
+            initialSpinning = true;
+            initialSpinStartTime = performance.now();
+          }, 450);
         }, 500);
 
       }, (xhr) => {
@@ -450,7 +475,7 @@
       });
 
       window.addEventListener('touchmove', (e) => {
-        if (isDragging && chestModel && e.touches.length === 1) {
+        if (isDragging && chestModel && e.touches.length === 1 && !initialSpinning) {
           const deltaX = e.touches[0].clientX - previousTouchX;
           chestModel.rotation.y += deltaX * 0.008;
           previousTouchX = e.touches[0].clientX;
@@ -462,7 +487,7 @@
       });
     }
 
-    // Balanceo 3D sutil para dar volumen sin girar 360
+    // Bucle de Renderizado
     let swingTime = 0;
     function animate() {
       requestAnimationFrame(animate);
@@ -470,19 +495,38 @@
       if (mixer) mixer.update(delta);
 
       if (chestModel) {
-        swingTime += delta * 1.5;
-        if (!isDragging && !cofreAbierto) {
-          chestModel.rotation.y = Math.sin(swingTime) * 0.14;
+        if (initialSpinning) {
+          const elapsed = performance.now() - initialSpinStartTime;
+          const progress = Math.min(elapsed / SPIN_DURATION, 1);
+
+          // Easing suave para dar exactamente una vuelta completa (2 * PI) en 3 segundos
+          // Función de desaceleración armónica
+          chestModel.rotation.y = (Math.PI * 2) * easeInOutQuad(progress);
+
+          if (progress >= 1) {
+            initialSpinning = false;
+            chestModel.rotation.y = 0; // Frente perfecto
+            // Mostrar botón "Abrir Cofre" después del giro de 3s
+            btnAbrir.style.display = 'flex';
+          }
+        } else if (!isDragging && !cofreAbierto) {
+          // Balanceo 3D sutil para dar volumen antes de abrir
+          swingTime += delta * 1.5;
+          chestModel.rotation.y = Math.sin(swingTime) * 0.12;
         }
       }
 
       renderer.render(scene, camera);
     }
 
-    // Confeti elegante dorado, oliva y blanco
+    function easeInOutQuad(t) {
+      return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+    }
+
+    // Confeti
     function dispararConfeti() {
       const end = Date.now() + (3.2 * 1000);
-      const colors = ['#c5a059', '#dfc285', '#87986a', '#ffffff', '#e8d5b5'];
+      const colors = ['#c5a059', '#e4c88e', '#8a9e70', '#ffffff', '#e8d5b5'];
 
       (function frame() {
         confetti({
@@ -519,27 +563,27 @@
         cofreAbierto = true;
 
         if (chestModel) {
-          chestModel.rotation.y = 0;
+          chestModel.rotation.y = 0; // Mirando de frente
         }
 
-        // 1. Abrir con velocidad rápida (timeScale: 2.2)
+        // 1. Abrir con velocidad rápida (permanece abierto al terminar)
         if (window.chestAction) {
           window.chestAction.play();
         }
 
-        // 2. Ocultar inmediatamente el botón "Abrir Cofre"
+        // 2. Ocultar botón "Abrir Cofre"
         btnAbrir.style.display = 'none';
 
-        // 3. A los 850ms (cuando termina de levantarse la tapa rápido): emerge el mensaje y confeti
+        // 3. A los 850ms (cuando se levanta la tapa): emerge el mensaje y confeti
         setTimeout(() => {
           mensajeFlotante.classList.add('animar');
           dispararConfeti();
         }, 850);
 
-        // 4. A los 2.3 segundos: aparece el segundo botón del detalle
+        // 4. A los 3 segundos exactos de abrirse el cofre: aparece el botón sorpresa
         setTimeout(() => {
           btnSorpresa.style.display = 'flex';
-        }, 2300);
+        }, 3000);
       }
     });
 

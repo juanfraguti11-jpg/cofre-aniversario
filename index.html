@@ -13,7 +13,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
     * {
@@ -31,7 +31,7 @@
       background: #000;
     }
 
-    /* Video de la cámara de fondo: Aspecto real sin estirar ni zoom raro */
+    /* Video de la cámara de fondo: Aspecto real sin estirar */
     #camera-feed {
       position: fixed;
       top: 50%;
@@ -56,40 +56,125 @@
       pointer-events: auto;
     }
 
-    /* Overlay oscuro sutil para que el cofre 3D resalte */
-    .ar-vignette {
+    /* Contenedor del Mensaje Flotante 3D (Sin tarjeta ni fondo blanco, sale del cofre) */
+    .mensaje-flotante-container {
       position: fixed;
-      inset: 0;
-      background: radial-gradient(circle at center, transparent 35%, rgba(0,0,0,0.4) 100%);
-      z-index: 3;
-      pointer-events: none;
-    }
-
-    /* Guía superior */
-    .header-badge {
-      position: fixed;
-      top: 20px;
       left: 50%;
       transform: translateX(-50%);
-      z-index: 10;
-      background: rgba(15, 23, 42, 0.7);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      padding: 8px 22px;
-      border-radius: 30px;
-      font-size: 14px;
-      font-weight: 600;
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      z-index: 25;
       pointer-events: none;
-      white-space: nowrap;
+      text-align: center;
+      width: 92%;
+      max-width: 380px;
+      /* Se posiciona justo encima del cofre */
+      top: 26%;
+      display: none;
     }
 
-    /* Loader / Estado de carga */
+    .mensaje-flotante-container.animar {
+      display: block;
+      animation: emergerDelCofre 1.3s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+    }
+
+    .texto-titulo {
+      font-size: 32px;
+      font-weight: 900;
+      color: #fff;
+      text-shadow: 
+        0 0 10px #ff2a6d, 
+        0 0 20px #ff2a6d, 
+        0 0 40px #ff0055, 
+        0 3px 6px rgba(0,0,0,0.9);
+      letter-spacing: -0.5px;
+      line-height: 1.15;
+      margin-bottom: 6px;
+    }
+
+    .texto-subtitulo {
+      font-size: 20px;
+      font-weight: 700;
+      color: #ffeaa7;
+      text-shadow: 
+        0 0 8px #ff7675, 
+        0 0 16px #d63031, 
+        0 2px 5px rgba(0,0,0,0.9);
+      line-height: 1.3;
+    }
+
+    @keyframes emergerDelCofre {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, 60px) scale(0.3);
+      }
+      60% {
+        opacity: 1;
+        transform: translate(-50%, -15px) scale(1.08);
+      }
+      100% {
+        opacity: 1;
+        transform: translate(-50%, 0) scale(1);
+      }
+    }
+
+    /* Botón Inferior Bonito */
+    .bottom-ui {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 30;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: auto;
+    }
+
+    .btn-abrir {
+      background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+      color: white;
+      border: none;
+      padding: 16px 44px;
+      font-size: 19px;
+      font-weight: 800;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(255, 65, 108, 0.55);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+      letter-spacing: 0.3px;
+    }
+
+    .btn-abrir:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 14px 35px rgba(255, 65, 108, 0.65);
+    }
+
+    .btn-abrir:active {
+      transform: translateY(1px) scale(0.98);
+    }
+
+    .btn-abrir::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.4) 50%, transparent 60%);
+      transform: rotate(45deg);
+      animation: brillo 2.8s infinite;
+    }
+
+    @keyframes brillo {
+      0% { transform: translateX(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) rotate(45deg); }
+    }
+
+    /* Pantalla de carga inicial */
     .loading-overlay {
       position: fixed;
       inset: 0;
@@ -116,140 +201,31 @@
     @keyframes spin {
       100% { transform: rotate(360deg); }
     }
-
-    /* Tarjeta y Botón Inferior */
-    .bottom-ui {
-      position: fixed;
-      bottom: 25px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 90%;
-      max-width: 420px;
-      z-index: 20;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 14px;
-      pointer-events: none;
-    }
-
-    .interactive {
-      pointer-events: auto;
-    }
-
-    /* Tarjeta de Felicitación */
-    .mensaje-card {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      color: #1f2937;
-      padding: 22px 24px;
-      border-radius: 26px;
-      width: 100%;
-      text-align: center;
-      box-shadow: 0 20px 40px rgba(255, 71, 87, 0.35);
-      border: 2px solid #ff758c;
-      display: none;
-      animation: popBounce 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-    }
-
-    .mensaje-card h2 {
-      color: #ff4757;
-      font-size: 24px;
-      font-weight: 800;
-      margin-bottom: 6px;
-    }
-
-    .mensaje-card p {
-      font-size: 15px;
-      line-height: 1.45;
-      color: #4b5563;
-      font-weight: 600;
-    }
-
-    @keyframes popBounce {
-      0% { opacity: 0; transform: translateY(30px) scale(0.9); }
-      100% { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    /* Botón Hermoso de Abrir */
-    .btn-abrir {
-      background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
-      color: white;
-      border: none;
-      padding: 16px 42px;
-      font-size: 18px;
-      font-weight: 700;
-      border-radius: 50px;
-      cursor: pointer;
-      box-shadow: 0 10px 30px rgba(255, 65, 108, 0.5);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      transition: all 0.25s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .btn-abrir:hover {
-      transform: translateY(-2px) scale(1.02);
-      box-shadow: 0 14px 35px rgba(255, 65, 108, 0.6);
-    }
-
-    .btn-abrir:active {
-      transform: translateY(1px) scale(0.98);
-    }
-
-    .btn-abrir::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.4) 50%, transparent 60%);
-      transform: rotate(45deg);
-      animation: brillo 2.8s infinite;
-    }
-
-    @keyframes brillo {
-      0% { transform: translateX(-100%) rotate(45deg); }
-      100% { transform: translateX(100%) rotate(45deg); }
-    }
   </style>
 </head>
 <body>
 
-  <!-- Pantalla de carga mientras se activa la cámara y el modelo -->
+  <!-- Pantalla de carga -->
   <div id="loading" class="loading-overlay">
     <div class="spinner"></div>
-    <p id="loading-txt" style="font-weight: 600;">Iniciando cámara y cargando cofre...</p>
+    <p id="loading-txt" style="font-weight: 600;">Cargando cofre en el aire...</p>
   </div>
 
   <!-- Video real de la cámara trasera -->
   <video id="camera-feed" autoplay playsinline muted></video>
 
-  <!-- Efecto viñeta sutil -->
-  <div class="ar-vignette"></div>
-
   <!-- Canvas 3D -->
   <canvas id="three-canvas"></canvas>
 
-  <!-- Barra informativa superior -->
-  <div class="header-badge">
-    <span>✨</span>
-    <span>¡Cofre en el Aire! Toca el botón para abrir</span>
-    <span>✨</span>
+  <!-- Mensaje flotante sin fondo (Emerge de adentro del cofre) -->
+  <div class="mensaje-flotante-container" id="mensaje-flotante">
+    <div class="texto-titulo">¡Feliz Aniversario!</div>
+    <div class="texto-subtitulo">Te amo mucho ❤️</div>
   </div>
 
-  <!-- Interfaz de Usuario Inferior -->
+  <!-- Botón Inferior de Abrir -->
   <div class="bottom-ui">
-    <div class="mensaje-card interactive" id="mensaje-card">
-      <h2>🎉 ¡Feliz Aniversario! 🎉</h2>
-      <p>Te amo con todo mi corazón mi amor ❤️<br>¡Gracias por ser mi lugar favorito en el mundo!</p>
-    </div>
-
-    <button class="btn-abrir interactive" id="btn-abrir">
+    <button class="btn-abrir" id="btn-abrir">
       <span>✨</span>
       <span id="btn-texto">Abrir Cofre</span>
       <span>🔓</span>
@@ -263,12 +239,12 @@
     const canvas = document.getElementById('three-canvas');
     const btnAbrir = document.getElementById('btn-abrir');
     const btnTexto = document.getElementById('btn-texto');
-    const mensajeCard = document.getElementById('mensaje-card');
+    const mensajeFlotante = document.getElementById('mensaje-flotante');
 
     let scene, camera, renderer, mixer, clock, chestModel;
     let cofreAbierto = false;
 
-    // 1. Iniciar la cámara real del teléfono (sin zoom raro ni distorsiones)
+    // 1. Iniciar cámara trasera
     async function startCamera() {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
@@ -282,21 +258,19 @@
         video.srcObject = stream;
         await video.play();
       } catch (err) {
-        console.warn('No se pudo acceder a la cámara o se denegó el permiso:', err);
-        // Fallback: Si no hay cámara o la bloquean, fondo degradado galaxia
+        console.warn('Cámara no disponible o permiso denegado:', err);
         document.body.style.background = 'radial-gradient(circle at center, #240b36 0%, #000000 100%)';
       }
     }
 
-    // 2. Iniciar escena Three.js
+    // 2. Iniciar Three.js
     function initThree() {
       clock = new THREE.Clock();
-
       scene = new THREE.Scene();
 
-      camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
-      // Colocar cámara mirando de frente al cofre
-      camera.position.set(0, 0, 3.8);
+      // Cámara con perspectiva natural y distancia ajustada para que no quede encima
+      camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+      camera.position.set(0, 0, 5.2); // Más alejada para ver el cofre completo con distancia agradable
 
       renderer = new THREE.WebGLRenderer({
         canvas: canvas,
@@ -307,15 +281,15 @@
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       renderer.outputEncoding = THREE.sRGBEncoding;
 
-      // Iluminación para que el cofre se vea brillante y detallado
-      const ambientLight = new THREE.AmbientLight(0xffffff, 1.8);
+      // Luces bien configuradas
+      const ambientLight = new THREE.AmbientLight(0xffffff, 2.0);
       scene.add(ambientLight);
 
-      const dirLight1 = new THREE.DirectionalLight(0xfff0dd, 2.5);
+      const dirLight1 = new THREE.DirectionalLight(0xfff0dd, 2.6);
       dirLight1.position.set(2, 4, 3);
       scene.add(dirLight1);
 
-      const dirLight2 = new THREE.DirectionalLight(0xffd1dc, 1.2);
+      const dirLight2 = new THREE.DirectionalLight(0xffc0cb, 1.4);
       dirLight2.position.set(-2, -1, 2);
       scene.add(dirLight2);
 
@@ -324,59 +298,58 @@
       loader.load('./cofre.glb', (gltf) => {
         chestModel = gltf.scene;
 
-        // Centrar y escalar el cofre adecuadamente en el centro de la pantalla
         const box = new THREE.Box3().setFromObject(chestModel);
         const center = box.getCenter(new THREE.Vector3());
         const size = box.getSize(new THREE.Vector3());
 
         const maxDim = Math.max(size.x, size.y, size.z);
-        const targetSize = 1.8; // Tamaño perfecto flotando en el aire
+        // Escala más pequeña y elegante: no gigante en la cara
+        const targetSize = 1.45;
         const scaleFactor = targetSize / maxDim;
 
         chestModel.scale.setScalar(scaleFactor);
         
-        // Re-centrar en el origen (0, -0.2, 0) para que flote justo en el centro
+        // Centrar el cofre ligeramente más abajo del centro (y = -0.45) 
+        // para dejar espacio libre arriba al abrirse y emerger el mensaje
         chestModel.position.x = -center.x * scaleFactor;
-        chestModel.position.y = (-center.y * scaleFactor) - 0.2;
+        chestModel.position.y = (-center.y * scaleFactor) - 0.45;
         chestModel.position.z = -center.z * scaleFactor;
 
-        // Inclinación hacia la cámara para verse espectacular
-        chestModel.rotation.x = 0.2;
+        // Inclinación frontal perfecta y ESTÁTICO (sin dar vueltas solo)
+        chestModel.rotation.x = 0.22;
+        chestModel.rotation.y = 0; // Frente a frente
 
         scene.add(chestModel);
 
-        // Configurar la animación de apertura ('Scene')
+        // Preparar animación Scene
         if (gltf.animations && gltf.animations.length > 0) {
           mixer = new THREE.AnimationMixer(chestModel);
           const clip = THREE.AnimationClip.findByName(gltf.animations, 'Scene') || gltf.animations[0];
           const action = mixer.clipAction(clip);
           action.setLoop(THREE.LoopOnce);
           action.clampWhenFinished = true;
-          // Guardar referencia
           window.chestAction = action;
         }
 
         // Ocultar pantalla de carga
         loadingScreen.style.opacity = '0';
-        setTimeout(() => loadingScreen.style.display = 'none', 500);
+        setTimeout(() => loadingScreen.style.display = 'none', 400);
 
       }, (xhr) => {
         if (xhr.lengthComputable) {
           const percent = Math.round((xhr.loaded / xhr.total) * 100);
-          loadingTxt.innerText = `Cargando cofre mágico (${percent}%)...`;
+          loadingTxt.innerText = `Cargando cofre... (${percent}%)`;
         }
       }, (err) => {
-        console.error('Error cargando cofre:', err);
+        console.error('Error al cargar cofre:', err);
         loadingTxt.innerText = 'Error al cargar el cofre.';
       });
 
-      // Manejo de resize
       window.addEventListener('resize', onWindowResize);
 
-      // Permitir girar el cofre con el dedo / touch
+      // El usuario puede rotarlo con su dedo si quiere explorarlo, pero no gira solo
       setupTouchControls();
 
-      // Loop de renderizado
       animate();
     }
 
@@ -386,17 +359,15 @@
       renderer.setSize(window.innerWidth, window.innerHeight);
     }
 
-    // Rotación e interacción táctil con el dedo
+    // Permitir girar con el dedo solo si el usuario lo toca manualmente
     let isDragging = false;
     let previousTouchX = 0;
-    let autoRotate = true;
 
     function setupTouchControls() {
       window.addEventListener('touchstart', (e) => {
         if (e.touches.length === 1) {
           isDragging = true;
           previousTouchX = e.touches[0].clientX;
-          autoRotate = false;
         }
       });
 
@@ -413,46 +384,40 @@
       });
     }
 
-    // Animación continua (flotación mágica en el aire)
-    let floatTime = 0;
+    // Animación de renderizado (estático, sin rotación automática)
     function animate() {
       requestAnimationFrame(animate);
-
       const delta = clock.getDelta();
       if (mixer) mixer.update(delta);
-
-      if (chestModel) {
-        floatTime += delta * 2;
-        // Flotación suave arriba y abajo (levitación mágica en el aire)
-        chestModel.position.y += Math.sin(floatTime) * 0.0015;
-
-        // Auto-rotación sutil si el usuario no lo está girando
-        if (autoRotate) {
-          chestModel.rotation.y += 0.005;
-        }
-      }
-
       renderer.render(scene, camera);
     }
 
-    // Fiesta de confeti
-    function lanzarConfeti() {
+    // Fiesta de Confeti
+    function dispararConfeti() {
       const end = Date.now() + (3.5 * 1000);
       const colors = ['#ff4757', '#ff6b81', '#ffd32a', '#ff9ff3', '#ffffff', '#2ed573'];
 
       (function frame() {
+        // Disparar desde el cofre hacia arriba
+        confetti({
+          particleCount: 7,
+          angle: 90,
+          spread: 70,
+          origin: { x: 0.5, y: 0.6 },
+          colors: colors
+        });
         confetti({
           particleCount: 5,
           angle: 60,
           spread: 55,
-          origin: { x: 0 },
+          origin: { x: 0.1, y: 0.7 },
           colors: colors
         });
         confetti({
           particleCount: 5,
           angle: 120,
           spread: 55,
-          origin: { x: 1 },
+          origin: { x: 0.9, y: 0.7 },
           colors: colors
         });
 
@@ -465,34 +430,35 @@
     // Botón Abrir Cofre
     btnAbrir.addEventListener('click', () => {
       if (!cofreAbierto) {
-        // 1. Mostrar tarjeta con el mensaje de aniversario
-        mensajeCard.style.display = 'block';
-
-        // 2. Abrir el cofre con su animación 3D
-        if (window.chestAction) {
-          window.chestAction.play();
-        }
-
-        // 3. Detener la rotación y orientar el cofre al frente para ver lo que hay dentro
-        autoRotate = false;
+        // 1. Asegurar orientación frontal para ver la apertura
         if (chestModel) {
           chestModel.rotation.y = 0;
         }
 
-        // 4. Confeti
-        lanzarConfeti();
+        // 2. Iniciar la animación del cofre abriéndose
+        if (window.chestAction) {
+          window.chestAction.play();
+        }
 
-        // 5. Estado del botón
+        // 3. El cofre tarda ~2 segundos en terminar de levantar la tapa:
+        // Coordinamos la salida del mensaje y el confeti EXACTAMENTE cuando la tapa está abierta
+        setTimeout(() => {
+          // Mostrar mensaje flotante emergiendo del cofre
+          mensajeFlotante.classList.add('animar');
+          // Disparar el confeti saliendo del cofre
+          dispararConfeti();
+        }, 1900);
+
+        // 4. Actualizar botón
         btnTexto.innerText = "¡Abierto! ❤️";
         btnAbrir.style.background = "linear-gradient(135deg, #10b981 0%, #059669 100%)";
         btnAbrir.style.boxShadow = "0 10px 30px rgba(16, 185, 129, 0.45)";
         cofreAbierto = true;
       } else {
-        lanzarConfeti();
+        dispararConfeti();
       }
     });
 
-    // Iniciar todo
     startCamera();
     initThree();
   </script>

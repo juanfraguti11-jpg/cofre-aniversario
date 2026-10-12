@@ -110,14 +110,64 @@
       line-height: 1.3;
     }
 
+    /* Arco de 3 fotos flotantes encima del mensaje */
+    .arco-fotos {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 16px;
+      margin-bottom: 14px;
+      width: 100%;
+    }
+
+    .foto-arco-wrapper {
+      position: relative;
+      transition: transform 0.3s ease;
+    }
+
+    /* Estilo marco polaroid mini con ribete dorado */
+    .foto-arco {
+      width: 82px;
+      height: 98px;
+      background: #ffffff;
+      padding: 5px 5px 12px 5px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45), 0 0 14px rgba(197, 160, 89, 0.5);
+      border: 1.5px solid var(--color-dorado);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .foto-arco img {
+      width: 100%;
+      height: 72px;
+      object-fit: cover;
+      border-radius: 7px;
+    }
+
+    /* Disposición geométrica en ARCO: la izquierda gira a la izq, la del centro sube, la derecha gira a la der */
+    .foto-arco-izq {
+      transform: translateY(14px) rotate(-16deg);
+    }
+
+    .foto-arco-centro {
+      transform: translateY(-8px) scale(1.12);
+      z-index: 2;
+    }
+
+    .foto-arco-der {
+      transform: translateY(14px) rotate(16deg);
+    }
+
     @keyframes emergerDelCofre {
       0% {
         opacity: 0;
-        transform: translate(-50%, 50px) scale(0.3);
+        transform: translate(-50%, 60px) scale(0.25);
       }
       60% {
         opacity: 1;
-        transform: translate(-50%, -10px) scale(1.06);
+        transform: translate(-50%, -12px) scale(1.05);
       }
       100% {
         opacity: 1;
@@ -282,8 +332,27 @@
   <!-- Canvas 3D -->
   <canvas id="three-canvas"></canvas>
 
-  <!-- Mensaje flotante sin fondo emergente -->
+  <!-- Mensaje flotante sin fondo emergente con fotos en ARCO encima -->
   <div class="mensaje-flotante-container" id="mensaje-flotante">
+    <!-- Arco de 3 fotos de nosotros -->
+    <div class="arco-fotos">
+      <div class="foto-arco-wrapper foto-arco-izq">
+        <div class="foto-arco">
+          <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=400&q=80" alt="Nosotros">
+        </div>
+      </div>
+      <div class="foto-arco-wrapper foto-arco-centro">
+        <div class="foto-arco">
+          <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=400&q=80" alt="Amor">
+        </div>
+      </div>
+      <div class="foto-arco-wrapper foto-arco-der">
+        <div class="foto-arco">
+          <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=400&q=80" alt="Juntos">
+        </div>
+      </div>
+    </div>
+
     <div class="texto-titulo">¡Feliz Aniversario!</div>
     <div class="texto-subtitulo">Te amo mucho ❤️</div>
   </div>

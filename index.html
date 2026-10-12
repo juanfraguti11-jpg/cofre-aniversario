@@ -2,12 +2,13 @@
 <html lang="es">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Nuestra Sorpresa de Aniversario ❤️</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Sorpresa de Aniversario ❤️</title>
 
-  <!-- Google Model-Viewer: El estándar moderno oficial para Realidad Aumentada móvil -->
-  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
-  <!-- Confeti festivo -->
+  <!-- Three.js + GLTFLoader -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+  <!-- Confeti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,136 +28,164 @@
       height: 100%;
       overflow: hidden;
       font-family: 'Poppins', system-ui, -apple-system, sans-serif;
-      background: radial-gradient(circle at top, #2b1055 0%, #11052C 60%, #000000 100%);
-      color: #fff;
+      background: #000;
     }
 
-    /* Visor 3D y AR a pantalla completa */
-    model-viewer {
+    /* Video de la cámara de fondo: Aspecto real sin estirar ni zoom raro */
+    #camera-feed {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      object-fit: cover;
+    }
+
+    /* Canvas 3D transparente superpuesto */
+    #three-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
-      --poster-color: transparent;
-      outline: none;
+      z-index: 2;
+      pointer-events: auto;
     }
 
-    /* Decoración de fondo de corazones flotantes */
-    .bg-particles {
-      position: absolute;
+    /* Overlay oscuro sutil para que el cofre 3D resalte */
+    .ar-vignette {
+      position: fixed;
       inset: 0;
+      background: radial-gradient(circle at center, transparent 35%, rgba(0,0,0,0.4) 100%);
+      z-index: 3;
       pointer-events: none;
-      overflow: hidden;
-      z-index: 1;
     }
 
-    .heart-float {
-      position: absolute;
-      bottom: -20px;
-      font-size: 20px;
-      opacity: 0.25;
-      animation: floatUp 8s infinite linear;
-    }
-
-    @keyframes floatUp {
-      0% { transform: translateY(0) rotate(0deg); opacity: 0.25; }
-      100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
-    }
-
-    /* Encabezado elegante */
-    .header-tag {
-      position: absolute;
-      top: 24px;
+    /* Guía superior */
+    .header-badge {
+      position: fixed;
+      top: 20px;
       left: 50%;
       transform: translateX(-50%);
       z-index: 10;
-      background: rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      padding: 8px 24px;
-      border-radius: 40px;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 8px 22px;
+      border-radius: 30px;
       font-size: 14px;
       font-weight: 600;
-      color: #ff9ff3;
+      color: #fff;
       border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-      text-align: center;
-      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      pointer-events: none;
+      white-space: nowrap;
     }
 
-    /* Controles y tarjetas inferiores */
-    .bottom-controls {
-      position: absolute;
-      bottom: 28px;
+    /* Loader / Estado de carga */
+    .loading-overlay {
+      position: fixed;
+      inset: 0;
+      background: #0d0f17;
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      transition: opacity 0.5s ease;
+    }
+
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid rgba(255, 255, 255, 0.15);
+      border-top-color: #ff4757;
+      border-radius: 50%;
+      animation: spin 1s infinite linear;
+      margin-bottom: 16px;
+    }
+
+    @keyframes spin {
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Tarjeta y Botón Inferior */
+    .bottom-ui {
+      position: fixed;
+      bottom: 25px;
       left: 50%;
       transform: translateX(-50%);
-      width: 92%;
-      max-width: 440px;
+      width: 90%;
+      max-width: 420px;
       z-index: 20;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 14px;
+      pointer-events: none;
     }
 
-    /* Tarjeta del mensaje sorpresa */
-    .love-card {
-      background: rgba(255, 255, 255, 0.96);
+    .interactive {
+      pointer-events: auto;
+    }
+
+    /* Tarjeta de Felicitación */
+    .mensaje-card {
+      background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       color: #1f2937;
-      padding: 22px 26px;
+      padding: 22px 24px;
       border-radius: 26px;
       width: 100%;
       text-align: center;
-      box-shadow: 0 20px 45px rgba(255, 71, 87, 0.35), 0 5px 15px rgba(0,0,0,0.2);
+      box-shadow: 0 20px 40px rgba(255, 71, 87, 0.35);
       border: 2px solid #ff758c;
       display: none;
-      animation: popIn 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      animation: popBounce 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
     }
 
-    .love-card h2 {
+    .mensaje-card h2 {
       color: #ff4757;
       font-size: 24px;
       font-weight: 800;
-      margin-bottom: 8px;
-      letter-spacing: -0.3px;
+      margin-bottom: 6px;
     }
 
-    .love-card p {
+    .mensaje-card p {
       font-size: 15px;
-      line-height: 1.5;
+      line-height: 1.45;
       color: #4b5563;
       font-weight: 600;
     }
 
-    @keyframes popIn {
+    @keyframes popBounce {
       0% { opacity: 0; transform: translateY(30px) scale(0.9); }
       100% { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    /* Grupo de botones */
-    .button-group {
-      display: flex;
-      gap: 12px;
-      width: 100%;
-      justify-content: center;
-    }
-
-    /* Botón Abrir */
+    /* Botón Hermoso de Abrir */
     .btn-abrir {
-      flex: 1;
       background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
       color: white;
       border: none;
-      padding: 16px 24px;
-      font-size: 17px;
+      padding: 16px 42px;
+      font-size: 18px;
       font-weight: 700;
       border-radius: 50px;
       cursor: pointer;
-      box-shadow: 0 10px 28px rgba(255, 65, 108, 0.45);
+      box-shadow: 0 10px 30px rgba(255, 65, 108, 0.5);
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 10px;
+      gap: 12px;
       transition: all 0.25s ease;
       position: relative;
       overflow: hidden;
@@ -164,7 +193,7 @@
 
     .btn-abrir:hover {
       transform: translateY(-2px) scale(1.02);
-      box-shadow: 0 14px 34px rgba(255, 65, 108, 0.55);
+      box-shadow: 0 14px 35px rgba(255, 65, 108, 0.6);
     }
 
     .btn-abrir:active {
@@ -180,144 +209,233 @@
       height: 200%;
       background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.4) 50%, transparent 60%);
       transform: rotate(45deg);
-      animation: shine 3s infinite;
+      animation: brillo 2.8s infinite;
     }
 
-    @keyframes shine {
+    @keyframes brillo {
       0% { transform: translateX(-100%) rotate(45deg); }
       100% { transform: translateX(100%) rotate(45deg); }
-    }
-
-    /* Botón de Realidad Aumentada nativa */
-    .btn-ar {
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.35);
-      color: white;
-      padding: 16px 20px;
-      font-size: 15px;
-      font-weight: 700;
-      border-radius: 50px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: all 0.25s ease;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-    }
-
-    .btn-ar:hover {
-      background: rgba(255, 255, 255, 0.25);
-    }
-
-    /* Banner de ayuda inicial */
-    .touch-hint {
-      position: absolute;
-      top: 75px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(6px);
-      padding: 6px 16px;
-      border-radius: 20px;
-      font-size: 12px;
-      color: #e5e7eb;
-      pointer-events: none;
-      z-index: 5;
     }
   </style>
 </head>
 <body>
 
-  <!-- Partículas de fondo -->
-  <div class="bg-particles" id="bg-particles"></div>
+  <!-- Pantalla de carga mientras se activa la cámara y el modelo -->
+  <div id="loading" class="loading-overlay">
+    <div class="spinner"></div>
+    <p id="loading-txt" style="font-weight: 600;">Iniciando cámara y cargando cofre...</p>
+  </div>
 
-  <!-- Etiqueta superior -->
-  <div class="header-tag">✨ Sorpresa de Aniversario ✨</div>
+  <!-- Video real de la cámara trasera -->
+  <video id="camera-feed" autoplay playsinline muted></video>
 
-  <div class="touch-hint">👆 Puedes girar y hacer zoom al cofre con los dedos</div>
+  <!-- Efecto viñeta sutil -->
+  <div class="ar-vignette"></div>
 
-  <!-- Visor 3D y AR: Sin marcadores raros, con escala y cámara normal -->
-  <model-viewer 
-    id="visor-cofre"
-    src="./cofre.glb" 
-    alt="Cofre del Tesoro de Aniversario"
-    ar 
-    ar-modes="webxr scene-viewer quick-look"
-    ar-scale="auto"
-    camera-controls 
-    shadow-intensity="1.5"
-    shadow-softness="0.8"
-    camera-orbit="0deg 75deg 105%"
-    min-camera-orbit="auto auto 50%"
-    max-camera-orbit="auto auto 250%"
-    exposure="1.2">
-  </model-viewer>
+  <!-- Canvas 3D -->
+  <canvas id="three-canvas"></canvas>
 
-  <!-- Controles Inferiores -->
-  <div class="bottom-controls">
-    <!-- Tarjeta del mensaje revelado -->
-    <div class="love-card" id="love-card">
+  <!-- Barra informativa superior -->
+  <div class="header-badge">
+    <span>✨</span>
+    <span>¡Cofre en el Aire! Toca el botón para abrir</span>
+    <span>✨</span>
+  </div>
+
+  <!-- Interfaz de Usuario Inferior -->
+  <div class="bottom-ui">
+    <div class="mensaje-card interactive" id="mensaje-card">
       <h2>🎉 ¡Feliz Aniversario! 🎉</h2>
-      <p>Te amo con todo mi corazón mi amor ❤️<br>¡Gracias por hacerme tan feliz cada día!</p>
+      <p>Te amo con todo mi corazón mi amor ❤️<br>¡Gracias por ser mi lugar favorito en el mundo!</p>
     </div>
 
-    <!-- Fila de Botones -->
-    <div class="button-group">
-      <button class="btn-abrir" id="btn-abrir">
-        <span>✨</span>
-        <span id="btn-texto">Abrir Cofre</span>
-        <span>🔓</span>
-      </button>
-
-      <!-- Botón que activa la cámara AR en el suelo/mesa -->
-      <button class="btn-ar" id="btn-ar-trigger">
-        <span style="font-size: 18px;">📱</span>
-        <span>Ver en mi mesa (AR)</span>
-      </button>
-    </div>
+    <button class="btn-abrir interactive" id="btn-abrir">
+      <span>✨</span>
+      <span id="btn-texto">Abrir Cofre</span>
+      <span>🔓</span>
+    </button>
   </div>
 
   <script>
-    const visor = document.getElementById('visor-cofre');
+    const loadingScreen = document.getElementById('loading');
+    const loadingTxt = document.getElementById('loading-txt');
+    const video = document.getElementById('camera-feed');
+    const canvas = document.getElementById('three-canvas');
     const btnAbrir = document.getElementById('btn-abrir');
     const btnTexto = document.getElementById('btn-texto');
-    const loveCard = document.getElementById('love-card');
-    const btnAr = document.getElementById('btn-ar-trigger');
+    const mensajeCard = document.getElementById('mensaje-card');
 
+    let scene, camera, renderer, mixer, clock, chestModel;
     let cofreAbierto = false;
 
-    // Disparar modo AR nativo al pulsar el botón de cámara
-    btnAr.addEventListener('click', () => {
-      visor.activateAR();
-    });
-
-    // Acción de Abrir Cofre
-    btnAbrir.addEventListener('click', () => {
-      if (!cofreAbierto) {
-        // 1. Mostrar tarjeta con el mensaje de amor
-        loveCard.style.display = 'block';
-
-        // 2. Reproducir la animación oficial del cofre ('Scene')
-        visor.animationName = 'Scene';
-        visor.loop = false;
-        visor.play({ repetitions: 1 });
-
-        // 3. Disparar confeti por toda la pantalla
-        lanzarConfeti();
-
-        // 4. Transformar botón a estado de celebración
-        btnTexto.innerText = "¡Abierto! ❤️";
-        btnAbrir.style.background = "linear-gradient(135deg, #10b981 0%, #059669 100%)";
-        btnAbrir.style.boxShadow = "0 10px 28px rgba(16, 185, 129, 0.4)";
-        cofreAbierto = true;
-      } else {
-        lanzarConfeti();
+    // 1. Iniciar la cámara real del teléfono (sin zoom raro ni distorsiones)
+    async function startCamera() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            facingMode: { ideal: 'environment' },
+            width: { ideal: 1280 },
+            height: { ideal: 720 }
+          },
+          audio: false
+        });
+        video.srcObject = stream;
+        await video.play();
+      } catch (err) {
+        console.warn('No se pudo acceder a la cámara o se denegó el permiso:', err);
+        // Fallback: Si no hay cámara o la bloquean, fondo degradado galaxia
+        document.body.style.background = 'radial-gradient(circle at center, #240b36 0%, #000000 100%)';
       }
-    });
+    }
 
-    // Confeti festivo
+    // 2. Iniciar escena Three.js
+    function initThree() {
+      clock = new THREE.Clock();
+
+      scene = new THREE.Scene();
+
+      camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
+      // Colocar cámara mirando de frente al cofre
+      camera.position.set(0, 0, 3.8);
+
+      renderer = new THREE.WebGLRenderer({
+        canvas: canvas,
+        alpha: true,
+        antialias: true
+      });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.outputEncoding = THREE.sRGBEncoding;
+
+      // Iluminación para que el cofre se vea brillante y detallado
+      const ambientLight = new THREE.AmbientLight(0xffffff, 1.8);
+      scene.add(ambientLight);
+
+      const dirLight1 = new THREE.DirectionalLight(0xfff0dd, 2.5);
+      dirLight1.position.set(2, 4, 3);
+      scene.add(dirLight1);
+
+      const dirLight2 = new THREE.DirectionalLight(0xffd1dc, 1.2);
+      dirLight2.position.set(-2, -1, 2);
+      scene.add(dirLight2);
+
+      // Cargar cofre.glb
+      const loader = new THREE.GLTFLoader();
+      loader.load('./cofre.glb', (gltf) => {
+        chestModel = gltf.scene;
+
+        // Centrar y escalar el cofre adecuadamente en el centro de la pantalla
+        const box = new THREE.Box3().setFromObject(chestModel);
+        const center = box.getCenter(new THREE.Vector3());
+        const size = box.getSize(new THREE.Vector3());
+
+        const maxDim = Math.max(size.x, size.y, size.z);
+        const targetSize = 1.8; // Tamaño perfecto flotando en el aire
+        const scaleFactor = targetSize / maxDim;
+
+        chestModel.scale.setScalar(scaleFactor);
+        
+        // Re-centrar en el origen (0, -0.2, 0) para que flote justo en el centro
+        chestModel.position.x = -center.x * scaleFactor;
+        chestModel.position.y = (-center.y * scaleFactor) - 0.2;
+        chestModel.position.z = -center.z * scaleFactor;
+
+        // Inclinación hacia la cámara para verse espectacular
+        chestModel.rotation.x = 0.2;
+
+        scene.add(chestModel);
+
+        // Configurar la animación de apertura ('Scene')
+        if (gltf.animations && gltf.animations.length > 0) {
+          mixer = new THREE.AnimationMixer(chestModel);
+          const clip = THREE.AnimationClip.findByName(gltf.animations, 'Scene') || gltf.animations[0];
+          const action = mixer.clipAction(clip);
+          action.setLoop(THREE.LoopOnce);
+          action.clampWhenFinished = true;
+          // Guardar referencia
+          window.chestAction = action;
+        }
+
+        // Ocultar pantalla de carga
+        loadingScreen.style.opacity = '0';
+        setTimeout(() => loadingScreen.style.display = 'none', 500);
+
+      }, (xhr) => {
+        if (xhr.lengthComputable) {
+          const percent = Math.round((xhr.loaded / xhr.total) * 100);
+          loadingTxt.innerText = `Cargando cofre mágico (${percent}%)...`;
+        }
+      }, (err) => {
+        console.error('Error cargando cofre:', err);
+        loadingTxt.innerText = 'Error al cargar el cofre.';
+      });
+
+      // Manejo de resize
+      window.addEventListener('resize', onWindowResize);
+
+      // Permitir girar el cofre con el dedo / touch
+      setupTouchControls();
+
+      // Loop de renderizado
+      animate();
+    }
+
+    function onWindowResize() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    // Rotación e interacción táctil con el dedo
+    let isDragging = false;
+    let previousTouchX = 0;
+    let autoRotate = true;
+
+    function setupTouchControls() {
+      window.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 1) {
+          isDragging = true;
+          previousTouchX = e.touches[0].clientX;
+          autoRotate = false;
+        }
+      });
+
+      window.addEventListener('touchmove', (e) => {
+        if (isDragging && chestModel && e.touches.length === 1) {
+          const deltaX = e.touches[0].clientX - previousTouchX;
+          chestModel.rotation.y += deltaX * 0.008;
+          previousTouchX = e.touches[0].clientX;
+        }
+      });
+
+      window.addEventListener('touchend', () => {
+        isDragging = false;
+      });
+    }
+
+    // Animación continua (flotación mágica en el aire)
+    let floatTime = 0;
+    function animate() {
+      requestAnimationFrame(animate);
+
+      const delta = clock.getDelta();
+      if (mixer) mixer.update(delta);
+
+      if (chestModel) {
+        floatTime += delta * 2;
+        // Flotación suave arriba y abajo (levitación mágica en el aire)
+        chestModel.position.y += Math.sin(floatTime) * 0.0015;
+
+        // Auto-rotación sutil si el usuario no lo está girando
+        if (autoRotate) {
+          chestModel.rotation.y += 0.005;
+        }
+      }
+
+      renderer.render(scene, camera);
+    }
+
+    // Fiesta de confeti
     function lanzarConfeti() {
       const end = Date.now() + (3.5 * 1000);
       const colors = ['#ff4757', '#ff6b81', '#ffd32a', '#ff9ff3', '#ffffff', '#2ed573'];
@@ -344,18 +462,39 @@
       }());
     }
 
-    // Decoración de corazones flotantes
-    const bgContainer = document.getElementById('bg-particles');
-    for (let i = 0; i < 15; i++) {
-      const heart = document.createElement('div');
-      heart.className = 'heart-float';
-      heart.innerText = ['❤️', '💖', '✨', '💕'][Math.floor(Math.random() * 4)];
-      heart.style.left = Math.random() * 100 + '%';
-      heart.style.animationDelay = (Math.random() * 7) + 's';
-      heart.style.animationDuration = (6 + Math.random() * 6) + 's';
-      heart.style.fontSize = (16 + Math.random() * 18) + 'px';
-      bgContainer.appendChild(heart);
-    }
+    // Botón Abrir Cofre
+    btnAbrir.addEventListener('click', () => {
+      if (!cofreAbierto) {
+        // 1. Mostrar tarjeta con el mensaje de aniversario
+        mensajeCard.style.display = 'block';
+
+        // 2. Abrir el cofre con su animación 3D
+        if (window.chestAction) {
+          window.chestAction.play();
+        }
+
+        // 3. Detener la rotación y orientar el cofre al frente para ver lo que hay dentro
+        autoRotate = false;
+        if (chestModel) {
+          chestModel.rotation.y = 0;
+        }
+
+        // 4. Confeti
+        lanzarConfeti();
+
+        // 5. Estado del botón
+        btnTexto.innerText = "¡Abierto! ❤️";
+        btnAbrir.style.background = "linear-gradient(135deg, #10b981 0%, #059669 100%)";
+        btnAbrir.style.boxShadow = "0 10px 30px rgba(16, 185, 129, 0.45)";
+        cofreAbierto = true;
+      } else {
+        lanzarConfeti();
+      }
+    });
+
+    // Iniciar todo
+    startCamera();
+    initThree();
   </script>
 </body>
 </html>

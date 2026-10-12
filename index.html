@@ -566,10 +566,18 @@
           chestModel.rotation.y = 0; // Mirando de frente
         }
 
-        // 1. Abrir con velocidad rápida (permanece abierto al terminar)
+        // 1. Abrir con velocidad rápida y mantener permanentemente abierto
         if (window.chestAction) {
+          window.chestAction.reset();
           window.chestAction.play();
         }
+
+        // Cuando la animación llega al final, congelamos el mixer para que jamás se cierre
+        mixer.addEventListener('finished', (e) => {
+          if (window.chestAction) {
+            window.chestAction.paused = true; // Congelado 100% abierto
+          }
+        });
 
         // 2. Ocultar botón "Abrir Cofre"
         btnAbrir.style.display = 'none';
@@ -580,10 +588,10 @@
           dispararConfeti();
         }, 850);
 
-        // 4. A los 3 segundos exactos de abrirse el cofre: aparece el botón sorpresa
+        // 4. A los 4 segundos (1 segundo más de duración solicitado): aparece el botón sorpresa
         setTimeout(() => {
           btnSorpresa.style.display = 'flex';
-        }, 3000);
+        }, 4000);
       }
     });
 

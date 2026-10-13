@@ -250,52 +250,33 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     }
 
-    /* Sección Collage de Momentos Especiales */
+    /* Fotos sueltas estilo collage desenfadado sin marcos ni títulos */
     .collage-seccion {
       width: 100%;
-      margin-bottom: 45px;
+      margin-bottom: 50px;
+      padding: 10px 4px;
     }
 
-    .collage-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
+    .collage-organico {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
       width: 100%;
-    }
-
-    .collage-item {
-      background: #ffffff;
-      padding: 8px 8px 12px 8px;
-      border-radius: 16px;
-      border: 1.5px solid rgba(197, 160, 89, 0.3);
-      box-shadow: 0 8px 24px rgba(76, 93, 48, 0.08);
-      cursor: pointer;
       position: relative;
-      transition: all 0.3s ease;
     }
 
-    .collage-item:nth-child(1) {
-      grid-column: span 2;
-    }
-
-    .collage-item:nth-child(1) .collage-img-box {
-      height: 240px;
-    }
-
-    .collage-item:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 14px 30px rgba(76, 93, 48, 0.16);
-    }
-
-    .collage-img-box {
-      width: 100%;
-      height: 180px;
-      border-radius: 12px;
+    .foto-suelta {
+      position: relative;
+      border-radius: 16px;
       overflow: hidden;
-      background: #eaece5;
+      cursor: pointer;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.16);
+      transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      border: 1px solid rgba(197, 160, 89, 0.2);
     }
 
-    .collage-img-box img {
+    .foto-suelta img {
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -304,17 +285,60 @@
       transition: transform 0.4s ease;
     }
 
-    .collage-item:hover .collage-img-box img {
-      transform: scale(1.05);
+    .foto-suelta:hover {
+      transform: scale(1.08) rotate(0deg) !important;
+      z-index: 10 !important;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.28), 0 0 18px rgba(197, 160, 89, 0.4);
     }
 
-    .collage-caption {
-      font-family: 'Caveat', cursive;
-      font-size: 18px;
-      color: var(--color-oliva-oscuro);
-      margin-top: 8px;
-      text-align: center;
-      font-weight: 700;
+    /* Tamaños variados y solapamientos orgánicos sutiles */
+    .foto-suelta:nth-child(1) {
+      width: 100%;
+      height: 220px;
+      transform: rotate(-1deg);
+      margin-bottom: 6px;
+    }
+    .foto-suelta:nth-child(2) {
+      width: 48%;
+      height: 180px;
+      transform: rotate(2deg) translateY(-8px);
+      z-index: 1;
+    }
+    .foto-suelta:nth-child(3) {
+      width: 47%;
+      height: 190px;
+      transform: rotate(-2.5deg) translateX(-6px);
+      z-index: 2;
+    }
+    .foto-suelta:nth-child(4) {
+      width: 47%;
+      height: 180px;
+      transform: rotate(1.5deg) translateY(-10px);
+      z-index: 2;
+    }
+    .foto-suelta:nth-child(5) {
+      width: 48%;
+      height: 190px;
+      transform: rotate(-2deg) translateY(-6px);
+      z-index: 1;
+    }
+    .foto-suelta:nth-child(6) {
+      width: 52%;
+      height: 175px;
+      transform: rotate(2deg);
+      z-index: 2;
+    }
+    .foto-suelta:nth-child(7) {
+      width: 42%;
+      height: 175px;
+      transform: rotate(-1.5deg) translateX(-8px);
+      z-index: 1;
+    }
+    .foto-suelta:nth-child(8) {
+      width: 100%;
+      height: 190px;
+      transform: rotate(0.8deg) translateY(-10px);
+      z-index: 2;
     }
 
     /* Modal / Visor de Imagen Pantalla Completa (Lightbox) */
@@ -529,69 +553,39 @@ Espero que vivamos muchos más años juntos y que Dios nos siga bendiciendo como
       </div>
     </div>
 
-    <!-- Sección Collage de Recuerdos Inolvidables -->
-    <div class="seccion-fotos-titulo">
-      <span>✨</span>
-      <span>Collage de Recuerdos</span>
-      <span>💖</span>
-    </div>
-
+    <!-- Fotos Sueltas de Recuerdos (Sin marcos ni títulos, solapadas con apertura a pantalla completa) -->
     <div class="collage-seccion">
-      <div class="collage-grid">
-        <div class="collage-item" onclick="abrirVisor('./fotos/recuerdo_reciente.png', 'Nuestros momentos más especiales juntos 💕')">
-          <div class="collage-img-box">
-            <img src="./fotos/recuerdo_reciente.png" alt="Collage recuerdo especial">
-          </div>
-          <div class="collage-caption">Momentos que guardo en el corazón 💕</div>
+      <div class="collage-organico">
+        <div class="foto-suelta" onclick="abrirVisor('./fotos/recuerdo_reciente.png', '')">
+          <img src="./fotos/recuerdo_reciente.png" alt="Recuerdo">
         </div>
 
-        <div class="collage-item" onclick="abrirVisor('./fotos/retrato_1.jpg', 'Siempre juntos, mi amor 👩‍❤️‍👨')">
-          <div class="collage-img-box">
-            <img src="./fotos/retrato_1.jpg" alt="Retrato juntos">
-          </div>
-          <div class="collage-caption">Siempre juntos 👩‍❤️‍👨</div>
+        <div class="foto-suelta" onclick="abrirVisor('./fotos/retrato_1.jpg', '')">
+          <img src="./fotos/retrato_1.jpg" alt="Recuerdo">
         </div>
 
-        <div class="collage-item" onclick="abrirVisor('./fotos/retrato_2.jpg', 'Tu luz ilumina mi vida ✨')">
-          <div class="collage-img-box">
-            <img src="./fotos/retrato_2.jpg" alt="Retrato 2">
-          </div>
-          <div class="collage-caption">Tu luz ✨</div>
+        <div class="foto-suelta" onclick="abrirVisor('./fotos/retrato_2.jpg', '')">
+          <img src="./fotos/retrato_2.jpg" alt="Recuerdo">
         </div>
 
-        <div class="collage-item" onclick="abrirVisor('./fotos/retrato_3.jpg', 'Días mágicos a tu lado 🌿')">
-          <div class="collage-img-box">
-            <img src="./fotos/retrato_3.jpg" alt="Retrato 3">
-          </div>
-          <div class="collage-caption">Días mágicos 🌿</div>
+        <div class="foto-suelta" onclick="abrirVisor('./fotos/retrato_3.jpg', '')">
+          <img src="./fotos/retrato_3.jpg" alt="Recuerdo">
         </div>
 
-        <div class="collage-item" onclick="abrirVisor('./fotos/retrato_4.jpg', 'Mi persona favorita en el mundo 💖')">
-          <div class="collage-img-box">
-            <img src="./fotos/retrato_4.jpg" alt="Retrato 4">
-          </div>
-          <div class="collage-caption">Mi persona favorita 💖</div>
+        <div class="foto-suelta" onclick="abrirVisor('./fotos/retrato_4.jpg', '')">
+          <img src="./fotos/retrato_4.jpg" alt="Recuerdo">
         </div>
 
-        <div class="collage-item" onclick="abrirVisor('./fotos/navidad_2.jpg', 'Celebrando la vida y nuestro amor 🥂')">
-          <div class="collage-img-box">
-            <img src="./fotos/navidad_2.jpg" alt="Celebrando juntos">
-          </div>
-          <div class="collage-caption">Celebrando el amor 🥂</div>
+        <div class="foto-suelta" onclick="abrirVisor('./fotos/navidad_2.jpg', '')">
+          <img src="./fotos/navidad_2.jpg" alt="Recuerdo">
         </div>
 
-        <div class="collage-item" onclick="abrirVisor('./fotos/chat_1.png', 'Nuestras palabras y complicidad 💌')">
-          <div class="collage-img-box">
-            <img src="./fotos/chat_1.png" alt="Recuerdo de chat 1">
-          </div>
-          <div class="collage-caption">Nuestra complicidad 💌</div>
+        <div class="foto-suelta" onclick="abrirVisor('./fotos/chat_1.png', '')">
+          <img src="./fotos/chat_1.png" alt="Recuerdo">
         </div>
 
-        <div class="collage-item" onclick="abrirVisor('./fotos/chat_2.png', 'Cada mensaje tuyo me llena de alegría 💬❤️')">
-          <div class="collage-img-box">
-            <img src="./fotos/chat_2.png" alt="Recuerdo de chat 2">
-          </div>
-          <div class="collage-caption">Mensajes de amor 💬❤️</div>
+        <div class="foto-suelta" onclick="abrirVisor('./fotos/chat_2.png', '')">
+          <img src="./fotos/chat_2.png" alt="Recuerdo">
         </div>
       </div>
     </div>

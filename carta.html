@@ -157,13 +157,14 @@
     /* Galería polaroids */
     .seccion-fotos-titulo {
       font-family: 'Playfair Display', serif;
-      font-size: 24px;
+      font-size: 25px;
       font-weight: 700;
       color: var(--color-oliva-oscuro);
       margin-bottom: 22px;
       display: flex;
       align-items: center;
       gap: 10px;
+      text-align: center;
     }
 
     .galeria {
@@ -171,7 +172,7 @@
       grid-template-columns: 1fr;
       gap: 26px;
       width: 100%;
-      margin-bottom: 40px;
+      margin-bottom: 45px;
     }
 
     .polaroid {
@@ -182,7 +183,9 @@
       box-shadow: 0 15px 35px rgba(76, 93, 48, 0.1);
       color: var(--color-texto);
       text-align: center;
-      transition: transform 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
     .polaroid:nth-child(odd) {
@@ -193,21 +196,33 @@
     }
 
     .polaroid:hover {
-      transform: scale(1.02) rotate(0deg);
+      transform: scale(1.025) rotate(0deg);
+      box-shadow: 0 20px 45px rgba(76, 93, 48, 0.18), 0 0 20px rgba(197, 160, 89, 0.3);
     }
 
     .polaroid-img-box {
       width: 100%;
-      height: 290px;
+      height: 310px;
       border-radius: 14px;
       overflow: hidden;
       background: #eaece5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
     }
 
     .polaroid-img-box img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      object-position: center;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+
+    .polaroid:hover .polaroid-img-box img {
+      transform: scale(1.04);
     }
 
     .polaroid-caption {
@@ -216,6 +231,168 @@
       color: var(--color-oliva-oscuro);
       margin-top: 14px;
       font-weight: 700;
+    }
+
+    .lupa-icono {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(4px);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      color: var(--color-oliva-oscuro);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    /* Sección Collage de Momentos Especiales */
+    .collage-seccion {
+      width: 100%;
+      margin-bottom: 45px;
+    }
+
+    .collage-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      width: 100%;
+    }
+
+    .collage-item {
+      background: #ffffff;
+      padding: 8px 8px 12px 8px;
+      border-radius: 16px;
+      border: 1.5px solid rgba(197, 160, 89, 0.3);
+      box-shadow: 0 8px 24px rgba(76, 93, 48, 0.08);
+      cursor: pointer;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .collage-item:nth-child(1) {
+      grid-column: span 2;
+    }
+
+    .collage-item:nth-child(1) .collage-img-box {
+      height: 240px;
+    }
+
+    .collage-item:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 14px 30px rgba(76, 93, 48, 0.16);
+    }
+
+    .collage-img-box {
+      width: 100%;
+      height: 180px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #eaece5;
+    }
+
+    .collage-img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+
+    .collage-item:hover .collage-img-box img {
+      transform: scale(1.05);
+    }
+
+    .collage-caption {
+      font-family: 'Caveat', cursive;
+      font-size: 18px;
+      color: var(--color-oliva-oscuro);
+      margin-top: 8px;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    /* Modal / Visor de Imagen Pantalla Completa (Lightbox) */
+    .modal-visor {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 20, 12, 0.94);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 100000;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-visor.activo {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal-cerrar {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      font-size: 24px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      z-index: 100001;
+    }
+
+    .modal-cerrar:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.08);
+    }
+
+    .modal-contenido-box {
+      max-width: 92%;
+      max-height: 82vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: zoomIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .modal-imagen {
+      max-width: 100%;
+      max-height: 70vh;
+      object-fit: contain;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 20px rgba(197, 160, 89, 0.4);
+      border: 2px solid rgba(197, 160, 89, 0.5);
+    }
+
+    .modal-pie-texto {
+      font-family: 'Caveat', cursive;
+      font-size: 26px;
+      color: var(--color-dorado-brillo);
+      margin-top: 16px;
+      text-align: center;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+    }
+
+    @keyframes zoomIn {
+      from { transform: scale(0.85); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
     }
 
     /* Botón Volver al Cofre */
@@ -279,7 +456,7 @@ Espero que vivamos muchos más años juntos y que Dios nos siga bendiciendo como
       <div class="carta-firma">Con todo mi amor para mi princesa ❤️</div>
     </div>
 
-    <!-- Recuerdos -->
+    <!-- Sección de Fotos Polaroid Principales (Con Títulos Específicos) -->
     <div class="seccion-fotos-titulo">
       <span>📸</span>
       <span>Nuestros Momentos</span>
@@ -287,60 +464,135 @@ Espero que vivamos muchos más años juntos y que Dios nos siga bendiciendo como
     </div>
 
     <div class="galeria">
-      <div class="polaroid">
+      <div class="polaroid" onclick="abrirVisor('./fotos/cada_momento.jpg', 'Cada momento a tu lado es un tesoro 💕')">
         <div class="polaroid-img-box">
-          <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=800&q=80" alt="Momentos Juntos">
+          <img src="./fotos/cada_momento.jpg" alt="Cada momento a tu lado es un tesoro">
+          <div class="lupa-icono">🔍</div>
         </div>
         <div class="polaroid-caption">Cada momento a tu lado es un tesoro 💕</div>
       </div>
 
-      <div class="polaroid">
+      <div class="polaroid" onclick="abrirVisor('./fotos/risas_alma.jpg', 'Risas que alegran el alma ✨')">
         <div class="polaroid-img-box">
-          <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=800&q=80" alt="Amor">
+          <img src="./fotos/risas_alma.jpg" alt="Risas que alegran el alma">
+          <div class="lupa-icono">🔍</div>
         </div>
         <div class="polaroid-caption">Risas que alegran el alma ✨</div>
       </div>
 
-      <div class="polaroid">
+      <div class="polaroid" onclick="abrirVisor('./fotos/tu_sonrisa.jpg', 'Tu sonrisa es mi lugar seguro 🤍✨')">
         <div class="polaroid-img-box">
-          <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=800&q=80" alt="Para siempre">
-        </div>
-        <div class="polaroid-caption">Por muchos años más juntos 🥂🌿</div>
-      </div>
-
-      <div class="polaroid">
-        <div class="polaroid-img-box">
-          <img src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=800&q=80" alt="Cómplices">
-        </div>
-        <div class="polaroid-caption">Mi cómplice favorita en todo 🌍✨</div>
-      </div>
-
-      <div class="polaroid">
-        <div class="polaroid-img-box">
-          <img src="https://images.unsplash.com/photo-1494774157365-9e04c6720e47?auto=format&fit=crop&w=800&q=80" alt="Atardecer juntos">
-        </div>
-        <div class="polaroid-caption">Atardeceres que son magia contigo 🌅❤️</div>
-      </div>
-
-      <div class="polaroid">
-        <div class="polaroid-img-box">
-          <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=800&q=80" alt="Detalles de amor">
-        </div>
-        <div class="polaroid-caption">En cada pequeño detalle estás tú 🕊️🌿</div>
-      </div>
-
-      <div class="polaroid">
-        <div class="polaroid-img-box">
-          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80" alt="Tu sonrisa">
+          <img src="./fotos/tu_sonrisa.jpg" alt="Tu sonrisa">
+          <div class="lupa-icono">🔍</div>
         </div>
         <div class="polaroid-caption">Tu sonrisa es mi lugar seguro 🤍✨</div>
       </div>
 
-      <div class="polaroid">
+      <div class="polaroid" onclick="abrirVisor('./fotos/atardecer.jpg', 'Atardeceres que son magia contigo 🌅❤️')">
         <div class="polaroid-img-box">
-          <img src="https://images.unsplash.com/photo-1469371670807-013ccf25f16a?auto=format&fit=crop&w=800&q=80" alt="Nuestro futuro">
+          <img src="./fotos/atardecer.jpg" alt="Atardecer juntos">
+          <div class="lupa-icono">🔍</div>
+        </div>
+        <div class="polaroid-caption">Atardeceres que son magia contigo 🌅❤️</div>
+      </div>
+
+      <div class="polaroid" onclick="abrirVisor('./fotos/construyendo_suenos.png', 'Construyendo nuestros sueños de la mano 💍🥂')">
+        <div class="polaroid-img-box">
+          <img src="./fotos/construyendo_suenos.png" alt="Construyendo nuestros sueños">
+          <div class="lupa-icono">🔍</div>
         </div>
         <div class="polaroid-caption">Construyendo nuestros sueños de la mano 💍🥂</div>
+      </div>
+
+      <div class="polaroid" onclick="abrirVisor('./fotos/navidad_1.jpg', 'Por muchos años más juntos 🥂🌿')">
+        <div class="polaroid-img-box">
+          <img src="./fotos/navidad_1.jpg" alt="Por muchos años más juntos">
+          <div class="lupa-icono">🔍</div>
+        </div>
+        <div class="polaroid-caption">Por muchos años más juntos 🥂🌿</div>
+      </div>
+
+      <div class="polaroid" onclick="abrirVisor('./fotos/paseo.jpg', 'Mi cómplice favorita en todo 🌍✨')">
+        <div class="polaroid-img-box">
+          <img src="./fotos/paseo.jpg" alt="Mi cómplice favorita">
+          <div class="lupa-icono">🔍</div>
+        </div>
+        <div class="polaroid-caption">Mi cómplice favorita en todo 🌍✨</div>
+      </div>
+
+      <div class="polaroid" onclick="abrirVisor('./fotos/recuerdo_photos.jpg', 'En cada pequeño detalle estás tú 🕊️🌿')">
+        <div class="polaroid-img-box">
+          <img src="./fotos/recuerdo_photos.jpg" alt="Detalles de amor">
+          <div class="lupa-icono">🔍</div>
+        </div>
+        <div class="polaroid-caption">En cada pequeño detalle estás tú 🕊️🌿</div>
+      </div>
+    </div>
+
+    <!-- Sección Collage de Recuerdos Inolvidables -->
+    <div class="seccion-fotos-titulo">
+      <span>✨</span>
+      <span>Collage de Recuerdos</span>
+      <span>💖</span>
+    </div>
+
+    <div class="collage-seccion">
+      <div class="collage-grid">
+        <div class="collage-item" onclick="abrirVisor('./fotos/recuerdo_reciente.png', 'Nuestros momentos más especiales juntos 💕')">
+          <div class="collage-img-box">
+            <img src="./fotos/recuerdo_reciente.png" alt="Collage recuerdo especial">
+          </div>
+          <div class="collage-caption">Momentos que guardo en el corazón 💕</div>
+        </div>
+
+        <div class="collage-item" onclick="abrirVisor('./fotos/retrato_1.jpg', 'Siempre juntos, mi amor 👩‍❤️‍👨')">
+          <div class="collage-img-box">
+            <img src="./fotos/retrato_1.jpg" alt="Retrato juntos">
+          </div>
+          <div class="collage-caption">Siempre juntos 👩‍❤️‍👨</div>
+        </div>
+
+        <div class="collage-item" onclick="abrirVisor('./fotos/retrato_2.jpg', 'Tu luz ilumina mi vida ✨')">
+          <div class="collage-img-box">
+            <img src="./fotos/retrato_2.jpg" alt="Retrato 2">
+          </div>
+          <div class="collage-caption">Tu luz ✨</div>
+        </div>
+
+        <div class="collage-item" onclick="abrirVisor('./fotos/retrato_3.jpg', 'Días mágicos a tu lado 🌿')">
+          <div class="collage-img-box">
+            <img src="./fotos/retrato_3.jpg" alt="Retrato 3">
+          </div>
+          <div class="collage-caption">Días mágicos 🌿</div>
+        </div>
+
+        <div class="collage-item" onclick="abrirVisor('./fotos/retrato_4.jpg', 'Mi persona favorita en el mundo 💖')">
+          <div class="collage-img-box">
+            <img src="./fotos/retrato_4.jpg" alt="Retrato 4">
+          </div>
+          <div class="collage-caption">Mi persona favorita 💖</div>
+        </div>
+
+        <div class="collage-item" onclick="abrirVisor('./fotos/navidad_2.jpg', 'Celebrando la vida y nuestro amor 🥂')">
+          <div class="collage-img-box">
+            <img src="./fotos/navidad_2.jpg" alt="Celebrando juntos">
+          </div>
+          <div class="collage-caption">Celebrando el amor 🥂</div>
+        </div>
+
+        <div class="collage-item" onclick="abrirVisor('./fotos/chat_1.png', 'Nuestras palabras y complicidad 💌')">
+          <div class="collage-img-box">
+            <img src="./fotos/chat_1.png" alt="Recuerdo de chat 1">
+          </div>
+          <div class="collage-caption">Nuestra complicidad 💌</div>
+        </div>
+
+        <div class="collage-item" onclick="abrirVisor('./fotos/chat_2.png', 'Cada mensaje tuyo me llena de alegría 💬❤️')">
+          <div class="collage-img-box">
+            <img src="./fotos/chat_2.png" alt="Recuerdo de chat 2">
+          </div>
+          <div class="collage-caption">Mensajes de amor 💬❤️</div>
+        </div>
       </div>
     </div>
 
@@ -351,7 +603,50 @@ Espero que vivamos muchos más años juntos y que Dios nos siga bendiciendo como
     </a>
   </div>
 
+  <!-- Modal Pantalla Completa para ver cualquier imagen ampliada al tocarla -->
+  <div class="modal-visor" id="modal-visor" onclick="cerrarVisor(event)">
+    <button class="modal-cerrar" onclick="cerrarVisorDirecto()">✕</button>
+    <div class="modal-contenido-box">
+      <img src="" alt="Foto ampliada" class="modal-imagen" id="modal-img">
+      <div class="modal-pie-texto" id="modal-txt"></div>
+    </div>
+  </div>
+
   <script>
+    const modalVisor = document.getElementById('modal-visor');
+    const modalImg = document.getElementById('modal-img');
+    const modalTxt = document.getElementById('modal-txt');
+
+    function abrirVisor(src, caption) {
+      modalImg.src = src;
+      modalTxt.innerText = caption;
+      modalVisor.style.display = 'flex';
+      setTimeout(() => {
+        modalVisor.classList.add('activo');
+      }, 10);
+      document.body.style.overflow = 'hidden';
+    }
+
+    function cerrarVisor(e) {
+      if (e.target === modalVisor || e.target.classList.contains('modal-contenido-box')) {
+        cerrarVisorDirecto();
+      }
+    }
+
+    function cerrarVisorDirecto() {
+      modalVisor.classList.remove('activo');
+      setTimeout(() => {
+        modalVisor.style.display = 'none';
+        modalImg.src = '';
+      }, 300);
+      document.body.style.overflow = 'auto';
+    }
+
+    // Tecla Escape para cerrar en escritorio
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') cerrarVisorDirecto();
+    });
+
     window.addEventListener('load', () => {
       confetti({
         particleCount: 55,

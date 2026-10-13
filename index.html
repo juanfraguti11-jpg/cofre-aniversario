@@ -322,7 +322,7 @@
   <!-- Pantalla de carga -->
   <div id="loading" class="loading-overlay">
     <div class="spinner"></div>
-    <p id="loading-txt" style="font-weight: 600; font-size: 16px;">Iniciando cámara y Realidad Aumentada...</p>
+    <p id="loading-txt" style="font-weight: 600; font-size: 16px;">Solo espere...</p>
     <button id="btn-permiso" class="btn-permiso-camara" onclick="iniciarCamaraManual()">📷 Activar Cámara</button>
   </div>
 
@@ -513,10 +513,8 @@
         }, 500);
 
       }, (xhr) => {
-        if (xhr.lengthComputable) {
-          const percent = Math.round((xhr.loaded / xhr.total) * 100);
-          loadingTxt.innerText = `Cargando cofre en el aire (${percent}%)...`;
-        }
+        // Mantiene texto limpio y discreto
+        loadingTxt.innerText = 'Solo espere...';
       }, (err) => {
         console.error('Error al cargar cofre:', err);
       });

@@ -6,6 +6,24 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
+  <script>
+    // Garantiza que el móvil cargue siempre la versión más reciente en vivo
+    (function() {
+      const APP_VERSION = '20261013_v10';
+      const storedVer = sessionStorage.getItem('app_carta_version');
+      if (storedVer !== APP_VERSION) {
+        sessionStorage.setItem('app_carta_version', APP_VERSION);
+        if ('caches' in window) {
+          caches.keys().then(names => names.forEach(name => caches.delete(name)));
+        }
+        const url = new URL(window.location.href);
+        if (url.searchParams.get('v') !== APP_VERSION) {
+          url.searchParams.set('v', APP_VERSION);
+          window.location.replace(url.toString());
+        }
+      }
+    })();
+  </script>
   <title>Nuestra Historia de Amor ❤️</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">

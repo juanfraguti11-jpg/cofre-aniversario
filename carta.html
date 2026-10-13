@@ -268,28 +268,27 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     }
 
-    /* Fotos estilo Collage Artístico: Bordes desgarrados/rasgados, solapadas unas sobre otras */
+    /* Collage en Montón Artístico Desordenado: Fuertemente solapadas (solo se asoma una esquina o mitad) */
     .collage-seccion {
       width: 100%;
-      margin-bottom: 60px;
-      padding: 20px 6px;
+      margin-bottom: 70px;
+      padding: 10px 0;
+      position: relative;
     }
 
     .collage-organico {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
       width: 100%;
+      max-width: 420px;
+      height: 620px;
+      margin: 0 auto;
       position: relative;
-      margin-top: 10px;
     }
 
     .foto-suelta {
-      position: relative;
+      position: absolute;
       cursor: pointer;
-      filter: drop-shadow(0 12px 22px rgba(0, 0, 0, 0.28));
-      transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      filter: drop-shadow(0 14px 26px rgba(0, 0, 0, 0.35));
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       border-radius: 4px;
     }
 
@@ -301,98 +300,117 @@
       object-position: center;
       display: block;
       transition: transform 0.4s ease;
-      /* Corte orgánico con esquinas desgarradas */
       clip-path: polygon(
-        0% 3%, 3% 1%, 7% 4%, 12% 0%, 19% 3%, 26% 1%, 34% 4%, 42% 1%, 51% 3%, 59% 0%, 67% 4%, 76% 1%, 85% 4%, 93% 1%, 98% 3%, 100% 2%,
-        99% 12%, 100% 21%, 98% 32%, 100% 41%, 98% 52%, 100% 64%, 98% 75%, 100% 86%, 98% 95%, 100% 98%,
-        96% 99%, 88% 97%, 79% 100%, 71% 98%, 62% 100%, 53% 97%, 45% 99%, 36% 97%, 27% 100%, 18% 98%, 9% 100%, 2% 98%, 0% 100%,
-        1% 88%, 0% 77%, 2% 66%, 0% 54%, 2% 43%, 0% 32%, 2% 21%, 0% 11%
+        0% 4%, 4% 1%, 8% 4%, 13% 1%, 20% 4%, 27% 1%, 35% 4%, 43% 1%, 52% 4%, 60% 1%, 68% 4%, 77% 1%, 86% 4%, 94% 1%, 98% 4%, 100% 2%,
+        99% 13%, 100% 22%, 98% 33%, 100% 42%, 98% 53%, 100% 65%, 98% 76%, 100% 87%, 98% 96%, 100% 98%,
+        95% 99%, 87% 97%, 78% 100%, 70% 98%, 61% 100%, 52% 97%, 44% 99%, 35% 97%, 26% 100%, 17% 98%, 8% 100%, 2% 98%, 0% 100%,
+        1% 87%, 0% 76%, 2% 65%, 0% 53%, 2% 42%, 0% 31%, 2% 20%, 0% 10%
       );
     }
 
-    /* Cinta adhesiva washi tape beige/dorada translúcida en las esquinas */
+    /* Cinta washi tape en la esquina */
     .foto-suelta::before {
       content: '';
       position: absolute;
       top: -10px;
       left: 50%;
-      transform: translateX(-50%) rotate(-3deg);
-      width: 55px;
-      height: 20px;
-      background: rgba(228, 200, 142, 0.65);
+      transform: translateX(-50%) rotate(-4deg);
+      width: 50px;
+      height: 18px;
+      background: rgba(228, 200, 142, 0.7);
       backdrop-filter: blur(2px);
-      box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.2);
       z-index: 5;
       pointer-events: none;
-      clip-path: polygon(4% 0%, 96% 0%, 100% 100%, 0% 100%);
+      clip-path: polygon(5% 0%, 95% 0%, 100% 100%, 0% 100%);
     }
 
+    /* Al pasar el dedo o tocarla, salta al frente iluminada */
     .foto-suelta:hover {
-      transform: scale(1.12) rotate(0deg) !important;
-      z-index: 20 !important;
-      filter: drop-shadow(0 20px 35px rgba(0, 0, 0, 0.45)) drop-shadow(0 0 16px rgba(197, 160, 89, 0.5));
+      transform: scale(1.15) rotate(0deg) !important;
+      z-index: 50 !important;
+      filter: drop-shadow(0 25px 40px rgba(0, 0, 0, 0.55)) drop-shadow(0 0 20px rgba(197, 160, 89, 0.7));
     }
 
-    /* Distribución artística muy encimada / solapada */
+    /* Pila de fotos montadas unas encima de otras tapándose mutuamente */
+    /* 1. Fondo base central */
     .foto-suelta:nth-child(1) {
-      width: 95%;
-      height: 230px;
-      transform: rotate(-2deg);
+      width: 250px;
+      height: 190px;
+      top: 15px;
+      left: 20px;
+      transform: rotate(-6deg);
       z-index: 1;
-      margin-bottom: -35px;
     }
 
+    /* 2. Se encima por la derecha tapando la mitad */
     .foto-suelta:nth-child(2) {
-      width: 54%;
-      height: 195px;
-      transform: rotate(4deg) translateX(-15px);
+      width: 230px;
+      height: 180px;
+      top: 40px;
+      right: 15px;
+      transform: rotate(8deg);
+      z-index: 2;
+    }
+
+    /* 3. Encima en diagonal cruzada */
+    .foto-suelta:nth-child(3) {
+      width: 240px;
+      height: 185px;
+      top: 150px;
+      left: 45px;
+      transform: rotate(-4deg);
       z-index: 3;
     }
 
-    .foto-suelta:nth-child(3) {
-      width: 54%;
-      height: 205px;
-      transform: rotate(-4.5deg) translateX(15px);
-      z-index: 2;
-      margin-left: -20px;
-    }
-
+    /* 4. Tapando el lateral izquierdo, solo se asoma una esquina */
     .foto-suelta:nth-child(4) {
-      width: 52%;
-      height: 190px;
-      transform: rotate(-3deg) translateY(-25px);
+      width: 210px;
+      height: 175px;
+      top: 220px;
+      left: 5px;
+      transform: rotate(-9deg);
       z-index: 4;
     }
 
+    /* 5. Cruzada encima por el centro-derecha */
     .foto-suelta:nth-child(5) {
-      width: 55%;
-      height: 200px;
-      transform: rotate(3.5deg) translateY(-20px) translateX(-10px);
-      z-index: 3;
-      margin-left: -25px;
-    }
-
-    .foto-suelta:nth-child(6) {
-      width: 56%;
+      width: 240px;
       height: 190px;
-      transform: rotate(2.5deg) translateY(-35px) translateX(10px);
+      top: 260px;
+      right: 20px;
+      transform: rotate(5deg);
       z-index: 5;
     }
 
-    .foto-suelta:nth-child(7) {
-      width: 50%;
-      height: 190px;
-      transform: rotate(-3.5deg) translateY(-30px);
-      z-index: 4;
-      margin-left: -25px;
+    /* 6. En el tercio inferior solapando la mitad de la 5 */
+    .foto-suelta:nth-child(6) {
+      width: 220px;
+      height: 175px;
+      top: 360px;
+      left: 30px;
+      transform: rotate(7deg);
+      z-index: 6;
     }
 
+    /* 7. Asomándose por la derecha */
+    .foto-suelta:nth-child(7) {
+      width: 230px;
+      height: 180px;
+      top: 400px;
+      right: 10px;
+      transform: rotate(-7deg);
+      z-index: 7;
+    }
+
+    /* 8. Coronando la pila abajo en el centro */
     .foto-suelta:nth-child(8) {
-      width: 96%;
-      height: 215px;
-      transform: rotate(1deg) translateY(-45px);
-      z-index: 6;
-      margin-bottom: -25px;
+      width: 260px;
+      height: 190px;
+      top: 435px;
+      left: 50%;
+      transform: translateX(-50%) rotate(2deg);
+      z-index: 8;
     }
 
     /* Modal / Visor de Imagen Pantalla Completa (Lightbox) */
